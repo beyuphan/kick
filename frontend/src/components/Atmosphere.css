@@ -42,3 +42,29 @@
   filter: blur(20px); /* Işığı daha yumuşak ve dumanlı yapar */
   opacity: 0.8;
 }
+
+/* --- LÜKS KADİFE PERDELER --- */
+.curtain-left, .curtain-right {
+  position: absolute;
+  top: 0; /* Ekranın en üst tavanına sabitler */
+  height: 45vh; /* Boyunu ekranın yarısından biraz daha aza indirdik (Eskisi 100vh idi) */
+  width: 25vw; /* Genişliği biraz açtık ki köşede dolgun dursun */
+  z-index: 30; 
+  pointer-events: none; 
+}
+
+.curtain-left {
+  left: -10%; /* Ekranın solundan çok hafif dışarı taşırdık, daha doğal dursun */
+  /* Görüntüyü üst sol köşeye (left top) hizalayıp sığdırıyoruz */
+  background: url('/curtain-left.png') no-repeat left top;
+  background-size: 100% 100%; 
+  filter: drop-shadow(20px 20px 25px rgba(0, 0, 0, 0.9)); 
+}
+
+.curtain-right {
+  right: -10%; /* Ekranın sağından çok hafif dışarı taşırdık */
+  /* Görüntüyü üst sağ köşeye (right top) hizalıyoruz */
+  background: url('/curtain-right.png') no-repeat right top;
+  background-size: 100% 100%;
+  filter: drop-shadow(-20px 20px 25px rgba(0, 0, 0, 0.9));
+}

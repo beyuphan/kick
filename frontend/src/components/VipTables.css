@@ -1,5 +1,4 @@
 /* src/components/VipTables.css */
-@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 
 .vip-section-wrapper {
   position: absolute;
@@ -10,68 +9,66 @@
 
 .vip-table-container {
   position: absolute;
-  bottom: 200px; /* Altyazı barının biraz üstünde */
-  width: 200px; /* Konteyneri KÜÇÜLTTÜK (Eskisi 400px) */
+  bottom: 120px; /* Masaları biraz daha aşağı çektik */
+  width: 300px; /* Konteyneri masaya uygun büyüttük */
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease-in-out;
 }
 
-.left { left: 8%; } /* Biraz daha merkeze yakın */
-.right { right: 8%; }
+.left { left: 5%; }
+.right { right: 5%; }
 
-/* Gerçek Masa Asseti Stili */
+/* GERÇEK MASA - İŞTE DERİNLİK BURADA */
 .real-table-png {
-  width: 180px; /* Masayı büyüt */
+  width: 280px; 
   height: auto;
-  /* Magenta (Pembe) Neon Parlama Efekti */
-  filter: drop-shadow(0 0 10px #ff00ff) drop-shadow(0 0 25px #ff00ff);
+  /* Masayı yere yatırıp perspektif veriyoruz */
+  transform: perspective(800px) rotateX(45deg);
+  transform-origin: bottom center;
+  /* Mor/Pembe Neon yansıması ve gölge */
+  filter: drop-shadow(0 30px 25px rgba(0,0,0,0.8)) drop-shadow(0 0 35px #ff00ff);
+  z-index: 1;
 }
 
-/* İsimlerin masanın üzerine binmesi */
+/* İsimlerin masanın üzerinde havada durması */
 .members-list {
   position: absolute;
-  top: -65px; /* İsimleri masanın tam üzerine oturttuk */
+  top: -80px; /* İsimleri masanın üstüne, havaya kaldırdık */
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
   align-items: center;
+  z-index: 2;
 }
-/* VIP Üye Kutusu Stili */
 .vip-member {
   display: flex;
   align-items: center;
-  gap: 10px; /* Aralığı daralttık */
-  padding: 5px 15px; /* Kutuyu KÜÇÜLTTÜK (Eskisi 10px 30px) */
-  border-radius: 5px;
-  /* Cyan (Mavi) Neon Parlama - Daha Zarif */
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-  margin-bottom: 10px; 
+  justify-content: center;
+  padding: 5px; 
+  background: transparent; /* Arka plan yok */
+  border: none; /* Çerçeve yok */
+  box-shadow: none; /* Kaba gölgeler yok */
+  margin-bottom: 5px;
 }
 
-/* Profesyonel Neon Font */
-.pavyon-neon-text {
-  font-family: 'Bungee', cursive; /* Daha retro, dijital neon font */
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: 900;
-  text-shadow: 0 0 8px #ff00ff, 0 0 15px #ff00ff; /* Parlamayı hafiflettik */
-  letter-spacing: 1px;
-}
-
+/* Gerçekçi Neon El Yazısı */
 .vip-name {
-  font-family: 'Bungee', cursive; /* Retro/Digital font */
-  font-size: 0.8rem; /* İsimleri okunur ama zarif yaptık */
+  font-family: 'Vibur', cursive;
+  font-size: 2.2rem; /* Fontu büyüttük çünkü el yazısı */
   color: #fff;
-  text-shadow: 0 0 8px #00ffff;
+  /* Katmanlı, gerçekçi neon parlama (Pembe/Magenta) */
+  text-shadow: 
+    0 0 2px #fff,
+    0 0 10px #ff00aa,
+    0 0 20px #ff00aa,
+    0 0 40px #ff00aa;
   white-space: nowrap;
+  transform: rotate(-5deg); /* Pavyon tabelası gibi hafif eğik dursun */
 }
 
 .table-label {
-  color: #fff;
-  font-size: 1.1rem; /* Etiketleri KÜÇÜLTTÜK (Eskisi 1.4rem) */
-  margin-top: 10px;
-  text-shadow: 0 0 8px #00ffff; /* Etiketler Mavi parlasın */
+  display: none; /* Şimdilik etiketleri gizledik, görseli bozmasın */
 }

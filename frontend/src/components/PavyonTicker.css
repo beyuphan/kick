@@ -1,18 +1,54 @@
 /* src/components/PavyonTicker.css */
-.ticker-wrapper {
-  background: rgba(255, 0, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-top: 2px solid #ff00ff;
-  height: 60px;
+.ticker-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 55px; /* Bant kalınlığı */
+  background: rgba(10, 0, 10, 0.9); /* Zifiri karanlık pavyon zemini */
+  border-top: 2px solid rgba(255, 0, 80, 0.5); /* İnce, lüks kırmızı/bordo çizgi */
+  box-shadow: 0 -10px 30px rgba(200, 0, 50, 0.3), inset 0 2px 10px rgba(200,0,50,0.1);
+  overflow: hidden;
   display: flex;
   align-items: center;
-  box-shadow: 0 -10px 20px rgba(255, 0, 255, 0.2);
+  z-index: 50;
+  backdrop-filter: blur(10px);
 }
 
-.ticker-text {
+.ticker-track {
+  display: flex;
+  white-space: nowrap;
+  /* Yazının hızı burada (20s). İstersen süreyi artırarak yavaşlatabilirsin */
+  animation: tickerScroll 20s linear infinite; 
+  will-change: transform; /* Titremeyi önler, pürüzsüz kaydırır */
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Oswald', sans-serif; /* Okunaklı ve lüks font */
   font-size: 1.5rem;
-  font-weight: 900;
-  color: #00ffff;
-  text-shadow: 0 0 10px #00ffff;
+  font-weight: 700;
+  color: #fff;
   text-transform: uppercase;
+  margin-right: 4rem; /* İsimler arası boşluk */
+  letter-spacing: 2px;
+}
+
+/* Kişi ismi özel olarak parlasın */
+.ticker-highlight {
+  color: #00ffff; /* Buz mavisi / Cyan neon */
+  text-shadow: 0 0 5px #00ffff, 0 0 15px #00ffff;
+  margin: 0 12px;
+}
+
+/* Kenardaki yıldız ikonları */
+.ticker-icon {
+  color: #ff0050; /* Pavyon kırmızısı */
+  text-shadow: 0 0 10px #ff0050;
+}
+
+/* Ekranın sağından girip solundan çıkma mantığı */
+@keyframes tickerScroll {
+  0% { transform: translate3d(100vw, 0, 0); }
+  100% { transform: translate3d(-100%, 0, 0); }
 }

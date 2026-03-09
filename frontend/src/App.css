@@ -1,7 +1,4 @@
 /* src/App.css */
-@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Monoton&display=swap');
-
-/* OBS için temel şeffaflık */
 body, #root, .pavyon-wrapper {
   margin: 0;
   padding: 0;
@@ -11,61 +8,104 @@ body, #root, .pavyon-wrapper {
   overflow: hidden;
   position: relative;
 }
-
-/* Görüntüyü Karartan ve Neonları Parlatan Katman */
+/* Görüntüyü Karartan Ana Katman (Kenarlar zifiri karanlık, orta loş) */
 .vignette-overlay {
   position: absolute;
   inset: 0;
-  /* Kenarları koyu mor/siyah, ortayı senin için şeffaf bırakır */
-  background: radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(20, 0, 25, 0.7) 100%);
+  /* Ortası saydam, kenarlara doğru zifiri karanlık ve bordo/siyah karışımı */
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 20%, rgba(15, 0, 5, 0.9) 80%, #000 100%);
+  /* Köşelerden vuran lüks kırmızı/magenta neon yansıması */
+  box-shadow: inset 0 0 200px rgba(200, 0, 50, 0.2);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Duman/Noise Efekti (Görüntünün "çok temiz" durmasını engeller) */
-.pavyon-wrapper::after {
-  content: "";
+/* Ağır ve Yavaş Hareket Eden Premium Işık/Duman Hüzmeleri */
+.smoke-overlay {
   position: absolute;
-  inset: 0;
-  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
-  opacity: 0.05;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  /* Duman yerine ağır, lokal ışık hüzmeleri (Kırmızı ve Mor ağırlıklı) */
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(255, 0, 50, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(150, 0, 255, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 50% 100%, rgba(255, 0, 100, 0.1) 0%, transparent 50%);
+  filter: blur(60px); /* Çok yumuşak, gerçekçi dağılım */
+  animation: premiumAtmos 15s infinite alternate ease-in-out;
   pointer-events: none;
   z-index: 2;
+  mix-blend-mode: screen;
 }
 
-/* 4. Neon Yazı Tipleri */
-.neon-text {
-  font-family: 'Monoton', cursive; /* Kavisli dijital neon fontu */
-  color: #fff;
-  text-shadow: 
-    0 0 10px #ff00ff, 
-    0 0 20px #ff00ff, 
-    0 0 40px #ff00ff;
-  letter-spacing: 3px;
+@keyframes premiumAtmos {
+  0% { transform: translateY(0) scale(1); opacity: 0.7; }
+  50% { transform: translateY(-30px) scale(1.05); opacity: 0.9; }
+  100% { transform: translateY(20px) scale(1); opacity: 0.6; }
+}
+.disco-sparkles {
+  position: absolute;
+  inset: 0;
+  /* Noktaların boyutunu biraz büyüttük (3px) ve renkleri %100 opak (1) yaptık */
+  background-image: 
+    radial-gradient(circle, rgba(255, 0, 100, 1) 3px, transparent 4px),   /* Parlak Pembe/Kırmızı */
+    radial-gradient(circle, rgba(0, 255, 255, 1) 3px, transparent 4px),   /* Parlak Mavi/Cyan */
+    radial-gradient(circle, rgba(255, 215, 0, 1) 3px, transparent 4px);   /* Parlak Altın Sarısı */
+  background-size: 120px 120px, 180px 180px, 220px 220px;
+  background-position: 0 0, 50px 50px, 100px 100px;
+  opacity: 0.6; /* Daha belirgin olmaları için opaklığı artırdık */
+  animation: discoSpin 20s linear infinite;
+  mix-blend-mode: screen; /* Noktaların beyaza dönmesini engeller, kendi renklerini korurlar */
+  pointer-events: none;
+  z-index: 3;
 }
 
-.pavyon-neon-text {
-  font-family: 'Bungee', cursive; /* Daha sert, blok neon fontu */
-  color: #fff;
-  text-shadow: 
-    0 0 8px #00ffff, 
-    0 0 15px #00ffff;
-  letter-spacing: 1px;
+@keyframes discoSpin {
+  from { background-position: 0 0, 50px 50px, 100px 100px; }
+  to { background-position: 500px 500px, 400px 300px, 300px 600px; }
 }
 
-/* 5. Işıkların Harmanlanması (Blend Mode) */
-/* Işıkların senin görüntünle (yayıncıyla) gerçekçi karışmasını sağlar */
-.spot-light {
-  mix-blend-mode: screen; /* Siyahı yok edip ışığı görüntüne yedirir */
-  filter: blur(15px);
-  z-index: 5;
+
+/* --- GEZİNEN SAHNE SPOTLARI --- */
+.spotlight-left {
+  position: absolute;
+  top: -10%; /* Ekranın biraz üstünden başlasın ki kaynağı belli olmasın */
+  left: 5%;
+  width: 25vw; /* Işığın genişliği */
+  height: 130vh; /* Işığın uzunluğu, tüm ekranı tarasın */
+  /* Kırmızı/Pembe Pavyon Işığı */
+  background: linear-gradient(180deg, rgba(255, 0, 80, 0.6) 0%, transparent 80%);
+  filter: blur(30px); /* Işığın kenarları yumuşak olsun */
+  transform-origin: top center; /* Dönme noktası tam tepe noktası */
+  animation: sweepLeft 8s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 4;
 }
 
-/* 6. Genel UI Konteynerları */
-.vip-section-wrapper {
-  z-index: 10;
+.spotlight-right {
+  position: absolute;
+  top: -10%;
+  right: 5%;
+  width: 25vw;
+  height: 130vh;
+  /* Cyan / Mavi Gece Kulübü Işığı */
+  background: linear-gradient(180deg, rgba(0, 200, 255, 0.6) 0%, transparent 80%);
+  filter: blur(30px);
+  transform-origin: top center;
+  animation: sweepRight 11s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 4;
 }
 
-.ticker-wrapper {
-  z-index: 20;
+/* Spotların sağa sola ağır ağır dönmesini sağlayan animasyonlar */
+@keyframes sweepLeft {
+  0% { transform: rotate(-35deg); opacity: 0.8; }
+  100% { transform: rotate(50deg); opacity: 0.4; } /* Dönerken parlaklık hafif azalıp artsın */
+}
+
+@keyframes sweepRight {
+  0% { transform: rotate(45deg); opacity: 0.5; }
+  100% { transform: rotate(-40deg); opacity: 0.9; }
 }

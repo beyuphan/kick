@@ -1,17 +1,21 @@
 import React from 'react';
-import { SpotLight } from './SpotLight';
+import { AmbienceLights } from './AmbienceLights'; 
 import './Atmosphere.css';
 
 export const Atmosphere = () => {
   return (
     <div className="pavyon-overlay-container">
-      <SpotLight side="left" />
-      <SpotLight side="right" />
+      {/* Arka plan dumanı ve spot ışıklar */}
+      <AmbienceLights />
+      
+      {/* YENİ: Sahneyi çerçeveleyen kadife perdeler */}
+      <div className="curtain-left" />
+      <div className="curtain-right" />
 
       <div className="header-container">
-        {/* Senin yapacağın o kurdele buraya gelecek aşko */}
+        {/* Üstteki URL PAVYON Tabelası */}
         <img src="/header-ribbon.png" style={{ width: '700px' }} alt="banner" />
-        <h1 className="pavyon-title">URL PAVYON</h1>
+        <h1 className="pavyon-title" style={{ fontFamily: "'Pacifico', cursive" }}>URL PAVYON</h1>
       </div>
     </div>
   );
