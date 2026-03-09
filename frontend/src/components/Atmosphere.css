@@ -1,0 +1,44 @@
+/* Spotlight Konumlandırma ve Animasyon */
+.left-beam {
+  transform: rotate(-15deg);
+  animation: pavyonFlicker 3s infinite alternate;
+}
+
+.right-beam {
+  transform: rotate(15deg);
+  animation: pavyonFlicker 4s infinite alternate-reverse;
+}
+
+@keyframes pavyonFlicker {
+  0%, 100% { opacity: 0.7; filter: brightness(1); }
+  33% { opacity: 0.4; filter: brightness(1.2); }
+  66% { opacity: 0.6; filter: brightness(0.9); }
+}
+
+/* Tabela (Senin yapacağın PNG için hazırlık) */
+.header-container {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.pavyon-title {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -110%);
+  color: white;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 8px;
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+  white-space: nowrap;
+}
+
+.spot-light {
+  mix-blend-mode: screen; /* Siyahı yok eder, ışığı senin videona yedirir! */
+  filter: blur(20px); /* Işığı daha yumuşak ve dumanlı yapar */
+  opacity: 0.8;
+}

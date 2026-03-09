@@ -1,0 +1,71 @@
+/* src/App.css */
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Monoton&display=swap');
+
+/* OBS için temel şeffaflık */
+body, #root, .pavyon-wrapper {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent !important;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Görüntüyü Karartan ve Neonları Parlatan Katman */
+.vignette-overlay {
+  position: absolute;
+  inset: 0;
+  /* Kenarları koyu mor/siyah, ortayı senin için şeffaf bırakır */
+  background: radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(20, 0, 25, 0.7) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Duman/Noise Efekti (Görüntünün "çok temiz" durmasını engeller) */
+.pavyon-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 4. Neon Yazı Tipleri */
+.neon-text {
+  font-family: 'Monoton', cursive; /* Kavisli dijital neon fontu */
+  color: #fff;
+  text-shadow: 
+    0 0 10px #ff00ff, 
+    0 0 20px #ff00ff, 
+    0 0 40px #ff00ff;
+  letter-spacing: 3px;
+}
+
+.pavyon-neon-text {
+  font-family: 'Bungee', cursive; /* Daha sert, blok neon fontu */
+  color: #fff;
+  text-shadow: 
+    0 0 8px #00ffff, 
+    0 0 15px #00ffff;
+  letter-spacing: 1px;
+}
+
+/* 5. Işıkların Harmanlanması (Blend Mode) */
+/* Işıkların senin görüntünle (yayıncıyla) gerçekçi karışmasını sağlar */
+.spot-light {
+  mix-blend-mode: screen; /* Siyahı yok edip ışığı görüntüne yedirir */
+  filter: blur(15px);
+  z-index: 5;
+}
+
+/* 6. Genel UI Konteynerları */
+.vip-section-wrapper {
+  z-index: 10;
+}
+
+.ticker-wrapper {
+  z-index: 20;
+}
