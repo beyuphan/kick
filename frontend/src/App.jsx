@@ -8,7 +8,7 @@ import { PavyonTicker } from './components/PavyonTicker';
 import { MoneyRain } from './components/MoneyRain';
 import { Dancers } from './components/Dancers';
 import { Atmosphere } from './components/Atmosphere';
-
+import Particles from './components/Particles';
 function App() {
   useSocket(); // Socket dinleyicilerini başlatıyoruz
   const current = usePavyonStore((state) => state.current);
@@ -22,7 +22,7 @@ function App() {
 
       {/* 2. KATMAN: Atmosfer ışıkları (Senin üzerine neon süzülmeleri vurur) */}
       <Atmosphere />
-
+      <Particles count={40} />
       {/* 3. KATMAN: Para yağmuru ve dansçılar (Görsel şölen katmanı) */}
       <MoneyRain />
       <Dancers />

@@ -23,41 +23,27 @@ body, #root, .pavyon-wrapper {
 /* Ağır ve Yavaş Hareket Eden Premium Işık/Duman Hüzmeleri */
 .smoke-overlay {
   position: absolute;
-  inset: -20%;
+  inset: 0;
   width: 140%;
   height: 140%;
-  /* Duman yerine ağır, lokal ışık hüzmeleri (Kırmızı ve Mor ağırlıklı) */
   background: 
-    radial-gradient(circle at 20% 80%, rgba(255, 0, 50, 0.15) 0%, transparent 45%),
-    radial-gradient(circle at 80% 80%, rgba(150, 0, 255, 0.15) 0%, transparent 45%),
-    radial-gradient(circle at 50% 100%, rgba(255, 0, 100, 0.1) 0%, transparent 50%);
-  filter: blur(60px); /* Çok yumuşak, gerçekçi dağılım */
+    radial-gradient(circle at 20% 80%, rgba(140, 30, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(230, 20, 130, 0.15) 0%, transparent 50%);
+  mix-blend-mode: color-dodge;
   animation: premiumAtmos 15s infinite alternate ease-in-out;
   pointer-events: none;
-  z-index: 2;
+  z-index: 1;
   mix-blend-mode: screen;
 }
-
+@keyframes smokeDrift {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.1) translate(-2%, 3%); }
+  100% { transform: scale(1.05) translate(2%, -2%); }
+}
 @keyframes premiumAtmos {
   0% { transform: translateY(0) scale(1); opacity: 0.7; }
   50% { transform: translateY(-30px) scale(1.05); opacity: 0.9; }
   100% { transform: translateY(20px) scale(1); opacity: 0.6; }
-}
-.disco-sparkles {
-  position: absolute;
-  inset: 0;
-  /* Noktaların boyutunu biraz büyüttük (3px) ve renkleri %100 opak (1) yaptık */
-  background-image: 
-    radial-gradient(circle, rgba(255, 0, 100, 1) 3px, transparent 4px),   /* Parlak Pembe/Kırmızı */
-    radial-gradient(circle, rgba(0, 255, 255, 1) 3px, transparent 4px),   /* Parlak Mavi/Cyan */
-    radial-gradient(circle, rgba(255, 215, 0, 1) 3px, transparent 4px);   /* Parlak Altın Sarısı */
-  background-size: 120px 120px, 180px 180px, 220px 220px;
-  background-position: 0 0, 50px 50px, 100px 100px;
-  opacity: 0.6; /* Daha belirgin olmaları için opaklığı artırdık */
-  animation: discoSpin 20s linear infinite;
-  mix-blend-mode: screen; /* Noktaların beyaza dönmesini engeller, kendi renklerini korurlar */
-  pointer-events: none;
-  z-index: 3;
 }
 
 @keyframes discoSpin {
