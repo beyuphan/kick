@@ -8,32 +8,66 @@ body, #root, .pavyon-wrapper {
   overflow: hidden;
   position: relative;
 }
-/* Görüntüyü Karartan Ana Katman (Kenarlar zifiri karanlık, orta loş) */
+/* Görüntüyü Karartan Ana Katman (Kenarlar zifiri, neon yansımaları daha çiğ) */
 .vignette-overlay {
   position: absolute;
   inset: 0;
-  /* Ortası saydam, kenarlara doğru zifiri karanlık ve bordo/siyah karışımı */
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 20%, rgba(15, 0, 5, 0.9) 80%, #000 100%);
-  /* Köşelerden vuran lüks kırmızı/magenta neon yansıması */
-  box-shadow: inset 0 0 200px rgba(200, 0, 50, 0.2);
+  /* Ortası kameran için açık, kenarlar daha agresif siyah */
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(20, 0, 10, 0.95) 80%, #000 100%);
+  /* Köşelerden vuran sert kan kırmızısı ve mor neon yansıması */
+  box-shadow: inset 0 0 250px rgba(255, 0, 50, 0.5), inset 0 0 80px rgba(138, 43, 226, 0.4);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Ağır ve Yavaş Hareket Eden Premium Işık/Duman Hüzmeleri */
+/* Daha Yoğun ve Parlak Duman Hüzmeleri */
 .smoke-overlay {
   position: absolute;
   inset: 0;
   width: 140%;
   height: 140%;
+  /* Pavyonun vazgeçilmezi çiğ pembe ve kırmızı dumanlar */
   background: 
-    radial-gradient(circle at 20% 80%, rgba(140, 30, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(230, 20, 130, 0.15) 0%, transparent 50%);
-  mix-blend-mode: color-dodge;
-  animation: premiumAtmos 15s infinite alternate ease-in-out;
+    radial-gradient(circle at 20% 80%, rgba(255, 0, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(circle at 80% 20%, rgba(255, 0, 50, 0.35) 0%, transparent 55%);
+  /* color-dodge renkleri videonun üstünde ışıl ışıl patlatır */
+  mix-blend-mode: color-dodge; 
+  animation: premiumAtmos 10s infinite alternate ease-in-out; /* Biraz hızlandırdık */
   pointer-events: none;
   z-index: 1;
+}
+
+/* --- GEZİNEN SAHNE SPOTLARI (Daha Keskin ve Parlak) --- */
+.spotlight-left {
+  position: absolute;
+  top: -10%; 
+  left: 5%;
+  width: 30vw; /* Işıkları biraz genişlettik */
+  height: 140vh; 
+  /* Çok daha sert Kırmızı/Pembe Pavyon Işığı */
+  background: linear-gradient(180deg, rgba(255, 0, 80, 0.85) 0%, rgba(255, 0, 255, 0.25) 60%, transparent 100%);
+  filter: blur(20px); /* Işığın kenarları eskisi kadar dağılmasın, daha net bir hüzme olsun */
+  transform-origin: top center; 
+  animation: sweepLeft 6s ease-in-out infinite alternate; /* Hızı artırdık */
   mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.spotlight-right {
+  position: absolute;
+  top: -10%;
+  right: 5%;
+  width: 30vw;
+  height: 140vh;
+  /* Sert Mor / Mavi Gece Kulübü Işığı */
+  background: linear-gradient(180deg, rgba(138, 43, 226, 0.85) 0%, rgba(0, 200, 255, 0.25) 60%, transparent 100%);
+  filter: blur(20px);
+  transform-origin: top center;
+  animation: sweepRight 8s ease-in-out infinite alternate; /* Hızı artırdık */
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 4;
 }
 @keyframes smokeDrift {
   0% { transform: scale(1) translate(0, 0); }
@@ -52,38 +86,7 @@ body, #root, .pavyon-wrapper {
 }
 
 
-/* --- GEZİNEN SAHNE SPOTLARI --- */
-.spotlight-left {
-  position: absolute;
-  top: -10%; /* Ekranın biraz üstünden başlasın ki kaynağı belli olmasın */
-  left: 5%;
-  width: 25vw; /* Işığın genişliği */
-  height: 130vh; /* Işığın uzunluğu, tüm ekranı tarasın */
-  /* Kırmızı/Pembe Pavyon Işığı */
-  background: linear-gradient(180deg, rgba(255, 0, 80, 0.6) 0%, transparent 80%);
-  filter: blur(30px); /* Işığın kenarları yumuşak olsun */
-  transform-origin: top center; /* Dönme noktası tam tepe noktası */
-  animation: sweepLeft 8s ease-in-out infinite alternate;
-  mix-blend-mode: screen;
-  pointer-events: none;
-  z-index: 4;
-}
 
-.spotlight-right {
-  position: absolute;
-  top: -10%;
-  right: 5%;
-  width: 25vw;
-  height: 130vh;
-  /* Cyan / Mavi Gece Kulübü Işığı */
-  background: linear-gradient(180deg, rgba(0, 200, 255, 0.6) 0%, transparent 80%);
-  filter: blur(30px);
-  transform-origin: top center;
-  animation: sweepRight 11s ease-in-out infinite alternate;
-  mix-blend-mode: screen;
-  pointer-events: none;
-  z-index: 4;
-}
 
 /* Spotların sağa sola ağır ağır dönmesini sağlayan animasyonlar */
 @keyframes sweepLeft {

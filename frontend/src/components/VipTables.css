@@ -9,30 +9,35 @@
 
 .vip-table-container {
   position: absolute;
-  bottom: 120px; /* Masaları biraz daha aşağı çektik */
-  width: 300px; /* Konteyneri masaya uygun büyüttük */
+  /* 1. Biraz yukarı kaldırıldı (Eskisi 120px idi, 160px yapalım) */
+  bottom: 160px; 
+  /* 2. Konteyner boyutu büyütüldü (Eskisi 300px idi) */
+  width: 360px; 
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease-in-out;
 }
 
-.left { left: 5%; }
-.right { right: 5%; }
+.left { left: 10%; }
+.right { right: 10%; }
 
 /* GERÇEK MASA - İŞTE DERİNLİK BURADA */
 .real-table-png {
-  width: 280px; 
+  /* 3. Masa boyutu büyütüldü (Eskisi 280px idi) */
+  width: 610px; 
   height: auto;
-  /* Masayı yere yatırıp perspektif veriyoruz */
   transform: perspective(800px) rotateX(45deg);
   transform-origin: bottom center;
-  /* Mor/Pembe Neon yansıması ve gölge */
   filter: drop-shadow(0 30px 25px rgba(0,0,0,0.8)) drop-shadow(0 0 35px #ff00ff);
   z-index: 1;
 }
 
-/* İsimlerin masanın üzerinde havada durması */
+/* 4. YENİ: Sadece SAĞDAKİ masanın görselini ayna efekti (ters çevirme) ile aynalıyoruz. 
+   Yazılar ters dönmesin diye sadece resme veriyoruz! */
+.right .real-table-png {
+  transform: perspective(800px) rotateX(45deg) scaleX(-1);
+}
 .members-list {
   position: absolute;
   top: -80px; /* İsimleri masanın üstüne, havaya kaldırdık */
@@ -57,18 +62,17 @@
 /* Gerçekçi Neon El Yazısı */
 .vip-name {
   font-family: 'Vibur', cursive;
-  font-size: 2.2rem; /* Fontu büyüttük çünkü el yazısı */
+  font-size: 2.2rem; 
   color: #fff;
-  /* Katmanlı, gerçekçi neon parlama (Pembe/Magenta) */
   text-shadow: 
     0 0 2px #fff,
     0 0 10px #ff00aa,
     0 0 20px #ff00aa,
     0 0 40px #ff00aa;
   white-space: nowrap;
-  transform: rotate(-5deg); /* Pavyon tabelası gibi hafif eğik dursun */
+  transform: rotate(-5deg);
 }
 
 .table-label {
-  display: none; /* Şimdilik etiketleri gizledik, görseli bozmasın */
+  display: none; 
 }
