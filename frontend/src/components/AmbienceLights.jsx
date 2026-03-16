@@ -3,14 +3,27 @@ import React from 'react';
 
 export const AmbienceLights = () => (
   <>
-    {/* CSS'te yazdığımız duman katmanı */}
+    {/* Yerdeki duman katmanı */}
     <div className="smoke-overlay" />
     
-    {/* CSS'te yazdığımız dönen neon disko ışıltıları */}
-    <div className="disco-sparkles" />
+    {/* KENARDAKİ İNCE SPOTLAR */}
+    <div className="spot-container side-left">
+      <img src="/spot-fixture.png" className="spot-fixture" alt="spot" />
+      <div className="spotlight-beam beam-side-left" />
+    </div>
 
-    {/* YENİ: Sahneyi Tarayan Hareketli Spotlar */}
-    <div className="spotlight-left" />
-    <div className="spotlight-right" />
+    <div className="spot-container side-right">
+      <img src="/spot-fixture.png" className="spot-fixture" alt="spot" />
+      <div className="spotlight-beam beam-side-right" />
+    </div>
+
+    {/* ORTADAKİ ANA BÜYÜK SPOTLAR */}
+    <div className="spot-container main-left">
+      <div className="spotlight-beam beam-main-left" />
+    </div>
+
+    <div className="spot-container main-right">
+      <div className="spotlight-beam beam-main-right" />
+    </div>
   </>
 );

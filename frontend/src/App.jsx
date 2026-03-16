@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css'; // Stil dosyasını import ettik
+import './App.css';
 import { usePavyonStore } from './store/usePavyonStore';
 import { useSocket } from './hooks/useSocket';
 import { VipTables } from './components/VipTables';
@@ -9,28 +9,38 @@ import { MoneyRain } from './components/MoneyRain';
 import { Dancers } from './components/Dancers';
 import { Atmosphere } from './components/Atmosphere';
 import Particles from './components/Particles';
+import { DjLasers } from './components/DjLasers'; 
+import { DiscoBall } from './components/DiscoBall';
+
 function App() {
-  useSocket(); // Socket dinleyicilerini başlatıyoruz
+  useSocket();
   const current = usePavyonStore((state) => state.current);
+  const moneyRainActive = usePavyonStore((state) => state.moneyRainActive);
+
+  // Aksiyon varsa (meyve tabağı veya para yağmuru) ekranı sars!
+  const isShaking = current?.type === 'ACTION' || moneyRainActive;
 
   return (
-    // "pavyon-wrapper" class'ı ile App.css'teki ayarları çekiyoruz
-    <div className="pavyon-wrapper">
+    // club-filter ve duruma göre camera-shake eklendi
+    <div className={`pavyon-wrapper ${isShaking ? 'camera-shake' : ''}`}>
       
       {/* 1. KATMAN: Görüntünü (yayıncıyı) loşlaştıracak olan efekt */}
       <div className="vignette-overlay" />
 
-      {/* 2. KATMAN: Atmosfer ışıkları (Senin üzerine neon süzülmeleri vurur) */}
+      {/* 2. KATMAN: Atmosfer ışıkları ve Lazerler */}
       <Atmosphere />
+      <DiscoBall />
+      <DjLasers /> {/* DJ LAZERLERİ */}
       <Particles count={40} />
-      {/* 3. KATMAN: Para yağmuru ve dansçılar (Görsel şölen katmanı) */}
+      
+      {/* 3. KATMAN: Para yağmuru ve dansçılar */}
       <MoneyRain />
       <Dancers />
 
-      {/* 4. KATMAN: VIP Masalar (Senin biraz önünde dururlar) */}
+      {/* 4. KATMAN: VIP Masalar */}
       <VipTables />
 
-      {/* 5. KATMAN: Duyurular (Meyve tabağı vb. büyük aksiyonlar) */}
+      {/* 5. KATMAN: Duyurular */}
       <AnimatePresence>
         {current?.type === 'ACTION' && (
           <motion.div
@@ -38,16 +48,13 @@ function App() {
             initial={{ scale: 0, opacity: 0, rotate: -10 }}
             animate={{ scale: 1.2, opacity: 1, rotate: 0 }}
             exit={{ scale: 0, opacity: 0 }}
-            className="action-notification"
+            className="action-notification disco-light" /* Disco animasyonu eklendi */
             style={{ 
-              position: 'absolute', 
-              top: '35%', 
-              width: '100%', 
-              textAlign: 'center',
-              zIndex: 100
+              position: 'absolute', top: '35%', width: '100%', 
+              textAlign: 'center', zIndex: 100
             }}
           >
-            <h1 className="neon-text" style={{ fontSize: '5rem' }}>
+            <h1 className="neon-sign" style={{ fontSize: '5rem' }}>
               🍊 {current.user.toUpperCase()} <br />
               MEYVE TABAĞI GÖNDERDİ!
             </h1>
@@ -55,7 +62,7 @@ function App() {
         )}
       </AnimatePresence>
 
-      {/* 6. KATMAN: En önde duran altyazı barı */}
+      {/* 6. KATMAN: Ticker */}
       <PavyonTicker /> 
     </div>
   );

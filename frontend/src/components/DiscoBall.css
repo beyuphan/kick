@@ -1,0 +1,55 @@
+/* src/components/DiscoBall.css */
+.disco-ball-wrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15; /* Tabelanın ve ışıkların biraz üstünde dursun */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+/* Tavandan inen ip/zincir */
+.disco-string {
+  width: 4px;
+  height: 250px;
+  background: linear-gradient(to right, #444, #888, #444);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Disko Topunun Kendisi */
+.disco-ball {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  /* Cam kırıkları/kareleri hissi veren gradient dokusu */
+  background-color: #ccc;
+  background-image: 
+    linear-gradient(45deg, rgba(255,255,255,0.6) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.6) 75%, rgba(255,255,255,0.6)), 
+    linear-gradient(-45deg, rgba(255,255,255,0.6) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.6) 75%, rgba(255,255,255,0.6));
+  background-size: 15px 15px;
+  
+  /* Topa 3 boyutlu bir yuvarlaklık katan gölgeler ve etrafa saçtığı renkli aura */
+  box-shadow: 
+    inset 0 0 20px rgba(0, 0, 0, 0.8), /* İç karartı */
+    inset 10px 0 20px rgba(255, 255, 255, 0.5), /* Sol ışık */
+    0 0 30px rgba(255, 0, 255, 0.6), /* Dış mor parlama */
+    0 0 60px rgba(0, 255, 255, 0.4); /* Dış mavi parlama */
+    
+  /* Hem kendi etrafında dönsün hem de renk aurası değişsin */
+  animation: spinBall 4s linear infinite, ballColorShift 6s linear infinite;
+}
+
+/* Kendi etrafında dönme efekti (background'u kaydırarak yapıyoruz) */
+@keyframes spinBall {
+  0% { background-position: 0 0, 7.5px 7.5px; }
+  100% { background-position: 150px 0, 157.5px 7.5px; }
+}
+
+/* Etrafına saçtığı auranın renk değiştirmesi */
+@keyframes ballColorShift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}

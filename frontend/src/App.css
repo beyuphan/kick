@@ -8,93 +8,268 @@ body, #root, .pavyon-wrapper {
   overflow: hidden;
   position: relative;
 }
-/* Görüntüyü Karartan Ana Katman (Kenarlar zifiri, neon yansımaları daha çiğ) */
+
+/* 1. KÖŞELERİ KARARTAN VİGNETTE (Ortası artık çok daha aydınlık) */
 .vignette-overlay {
   position: absolute;
   inset: 0;
-  /* Ortası kameran için açık, kenarlar daha agresif siyah */
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(20, 0, 10, 0.95) 80%, #000 100%);
-  /* Köşelerden vuran sert kan kırmızısı ve mor neon yansıması */
-  box-shadow: inset 0 0 250px rgba(255, 0, 50, 0.5), inset 0 0 80px rgba(138, 43, 226, 0.4);
+  /* Ortadaki %40'lık alan tamamen şeffaf, kenarlar ZİFİRİ KARANLIK */
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(10, 0, 10, 0.9) 80%, rgba(0, 0, 0, 1) 100%);
   pointer-events: none;
   z-index: 1;
 }
-
-/* Daha Yoğun ve Parlak Duman Hüzmeleri */
+/* 2. YENİ: YÜZÜ AYDINLATAN SAHNE IŞIĞI (Seni ön plana çıkarır) */
+.center-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40vw; /* Işığın çapını daralttık */
+  height: 40vh;
+  /* Yüzünü yakmasın diye pembeliği ve gücünü epey kıstık */
+  background: radial-gradient(circle, rgba(255, 100, 150, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: screen; 
+}
+/* YERE ÇÖKEN SAHNE SİSİ */
 .smoke-overlay {
   position: absolute;
-  inset: 0;
-  width: 140%;
-  height: 140%;
-  /* Pavyonun vazgeçilmezi çiğ pembe ve kırmızı dumanlar */
+  bottom: -10%;
+  left: -10%;
+  width: 120%;
+  height: 60%; /* Dumanı sadece yere ve masalara indirdik */
   background: 
-    radial-gradient(circle at 20% 80%, rgba(255, 0, 255, 0.35) 0%, transparent 55%),
-    radial-gradient(circle at 80% 20%, rgba(255, 0, 50, 0.35) 0%, transparent 55%);
-  /* color-dodge renkleri videonun üstünde ışıl ışıl patlatır */
-  mix-blend-mode: color-dodge; 
-  animation: premiumAtmos 10s infinite alternate ease-in-out; /* Biraz hızlandırdık */
+    radial-gradient(circle at 30% 100%, rgba(255, 0, 80, 0.25) 0%, transparent 50%),
+    radial-gradient(circle at 70% 100%, rgba(138, 43, 226, 0.2) 0%, transparent 50%);
+  filter: blur(40px);
+  animation: premiumAtmos 12s infinite alternate ease-in-out;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
-/* --- GEZİNEN SAHNE SPOTLARI (Daha Keskin ve Parlak) --- */
-.spotlight-left {
+/* 3D GERÇEKÇİ SPOT IŞIKLARI (Clip-path ile koni şekli verildi) */
+.spotlight-left, .spotlight-right {
   position: absolute;
-  top: -10%; 
-  left: 5%;
-  width: 30vw; /* Işıkları biraz genişlettik */
-  height: 140vh; 
-  /* Çok daha sert Kırmızı/Pembe Pavyon Işığı */
-  background: linear-gradient(180deg, rgba(255, 0, 80, 0.85) 0%, rgba(255, 0, 255, 0.25) 60%, transparent 100%);
-  filter: blur(20px); /* Işığın kenarları eskisi kadar dağılmasın, daha net bir hüzme olsun */
-  transform-origin: top center; 
-  animation: sweepLeft 6s ease-in-out infinite alternate; /* Hızı artırdık */
-  mix-blend-mode: screen;
+  top: -8%;
+  width: 31vw; 
+  height: 140vh;
+  /* Koni Şekli: Tepesi dar, altı geniş */
+  clip-path: polygon(45% 0, 55% 0, 100% 100%, 0 100%);
+  filter: blur(15px);
+  transform-origin: top center;
   pointer-events: none;
-  z-index: 4;
+  z-index: 3;
+}
+
+.spotlight-left {
+  left: 5%;
+  background: linear-gradient(180deg, rgba(255, 0, 60, 0.35) 0%, rgba(255, 0, 150, 0.05) 70%, transparent 100%);
+  animation: sweepLeft 7s ease-in-out infinite alternate;
 }
 
 .spotlight-right {
-  position: absolute;
-  top: -10%;
   right: 5%;
-  width: 30vw;
-  height: 140vh;
-  /* Sert Mor / Mavi Gece Kulübü Işığı */
-  background: linear-gradient(180deg, rgba(138, 43, 226, 0.85) 0%, rgba(0, 200, 255, 0.25) 60%, transparent 100%);
-  filter: blur(20px);
-  transform-origin: top center;
-  animation: sweepRight 8s ease-in-out infinite alternate; /* Hızı artırdık */
-  mix-blend-mode: screen;
-  pointer-events: none;
-  z-index: 4;
-}
-@keyframes smokeDrift {
-  0% { transform: scale(1) translate(0, 0); }
-  50% { transform: scale(1.1) translate(-2%, 3%); }
-  100% { transform: scale(1.05) translate(2%, -2%); }
-}
-@keyframes premiumAtmos {
-  0% { transform: translateY(0) scale(1); opacity: 0.7; }
-  50% { transform: translateY(-30px) scale(1.05); opacity: 0.9; }
-  100% { transform: translateY(20px) scale(1); opacity: 0.6; }
+  background: linear-gradient(180deg, rgba(138, 43, 226, 0.35) 0%, rgba(0, 150, 255, 0.05) 70%, transparent 100%);
+  animation: sweepRight 9s ease-in-out infinite alternate;
 }
 
-@keyframes discoSpin {
-  from { background-position: 0 0, 50px 50px, 100px 100px; }
-  to { background-position: 500px 500px, 400px 300px, 300px 600px; }
-}
-
-
-
-
-/* Spotların sağa sola ağır ağır dönmesini sağlayan animasyonlar */
+/* ANİMASYONLAR */
 @keyframes sweepLeft {
-  0% { transform: rotate(-35deg); opacity: 0.8; }
-  100% { transform: rotate(50deg); opacity: 0.4; } /* Dönerken parlaklık hafif azalıp artsın */
+  0% { transform: rotate(-25deg); opacity: 0.8; }
+  100% { transform: rotate(15deg); opacity: 0.5; }
 }
 
 @keyframes sweepRight {
-  0% { transform: rotate(45deg); opacity: 0.5; }
-  100% { transform: rotate(-40deg); opacity: 0.9; }
+  0% { transform: rotate(25deg); opacity: 0.5; }
+  100% { transform: rotate(-15deg); opacity: 0.8; }
+}
+
+@keyframes premiumAtmos {
+  0% { transform: translateY(0) scale(1); opacity: 0.6; }
+  100% { transform: translateY(-30px) scale(1.1); opacity: 0.9; }
+}
+
+/* --- YENİ GERÇEKÇİ SPOT IŞIKLARI VE CİHAZLARI --- */
+
+/* Tavana asılı spot donanımı ve ışığın ana kabı */
+.spot-container {
+  position: absolute;
+  top: -40px; /* Cihazlar tavana asılı dursun */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 4;
+}
+
+/* Cihazların tavandaki yerleşimi */
+.side-left { left: 5%; }
+.side-right { right: 5%; }
+.main-left { left: 25%; }
+.main-right { right: 25%; }
+
+/* SPOT CİHAZI PNG'Sİ (Gerçek lamba kasası) */
+.spot-fixture {
+  width: 70px; /* Cihazın büyüklüğü (Kendi resmine göre küçültüp büyütebilirsin) */
+  height: auto;
+  z-index: 5;
+  filter: drop-shadow(0 15px 15px rgba(0,0,0,0.9)); /* Cihaza karanlık ortam gölgesi */
+}
+
+/* Yanlardaki ince spotların cihazları biraz daha küçük olsun */
+.side-left .spot-fixture, 
+.side-right .spot-fixture {
+  width: 45px;
+}
+
+/* ORTAK IŞIK HUZMESİ ÖZELLİKLERİ */
+.spotlight-beam {
+  position: absolute;
+  /* Işık, cihazın tam merceğinden çıksın diye aşağı itiyoruz. 
+     Eğer ışık PNG'nin üstünden çıkarsa bu 35px değerini artır (örn: 50px yap) */
+  top: 35px; 
+  transform-origin: top center; /* Dönme noktası tam tepesi (cihazın içi) olsun */
+  pointer-events: none;
+}
+
+/* 1. ANA (BÜYÜK) IŞIKLAR */
+.beam-main-left, .beam-main-right {
+  width: 40vw; 
+  height: 120vh;
+  clip-path: polygon(48% 0, 52% 0, 100% 100%, 0 100%);
+  filter: blur(15px);
+}
+
+.beam-main-left {
+  background: linear-gradient(to bottom, rgba(255, 50, 80, 0.75) 0%, rgba(255, 50, 80, 0) 90%);
+  animation: sweepMainLeft 7s ease-in-out infinite alternate;
+}
+
+.beam-main-right {
+  background: linear-gradient(to bottom, rgba(138, 43, 226, 0.65) 0%, rgba(138, 43, 226, 0) 90%);
+  animation: sweepMainRight 9s ease-in-out infinite alternate;
+}
+
+/* 2. YAN (İNCE) IŞIKLAR */
+.beam-side-left, .beam-side-right {
+  width: 15vw; /* Çok daha ince bir ışık hüzmesi */
+  height: 120vh;
+  clip-path: polygon(49% 0, 51% 0, 100% 100%, 0 100%);
+  filter: blur(8px); /* Keskin ışık */
+}
+
+.beam-side-left {
+  /* Kenarı tarayan buz mavisi lazerimsi ince spot */
+  background: linear-gradient(to bottom, rgba(0, 255, 255, 0.6) 0%, rgba(0, 255, 255, 0) 90%); 
+  animation: sweepSideLeft 5s ease-in-out infinite alternate;
+}
+
+.beam-side-right {
+  /* Kenarı tarayan sarı ince spot */
+  background: linear-gradient(to bottom, rgba(255, 200, 50, 0.5) 0%, rgba(255, 200, 50, 0) 90%); 
+  animation: sweepSideRight 6s ease-in-out infinite alternate;
+}
+
+/* --- IŞIK HAREKET ANİMASYONLARI --- */
+@keyframes sweepMainLeft {
+  0% { transform: rotate(-25deg); opacity: 0.8; }
+  100% { transform: rotate(15deg); opacity: 0.5; }
+}
+@keyframes sweepMainRight {
+  0% { transform: rotate(25deg); opacity: 0.5; }
+  100% { transform: rotate(-15deg); opacity: 0.8; }
+}
+@keyframes sweepSideLeft {
+  0% { transform: rotate(-45deg); opacity: 0.8; }
+  100% { transform: rotate(35deg); opacity: 0.3; } /* Kenar ışıkları çok geniş açı tarasın */
+}
+@keyframes sweepSideRight {
+  0% { transform: rotate(45deg); opacity: 0.3; }
+  100% { transform: rotate(-35deg); opacity: 0.8; }
+}
+
+.pavyon-bg {
+  /* Velvet (kadife) dokusu için background-image ekleyebilirsin: url('/velvet.png'), ... */
+  background: radial-gradient(circle at center, rgba(43, 0, 0, 0.8) 0%, rgba(18, 0, 0, 0.9) 40%, rgba(0, 0, 0, 0.95) 100%);
+}
+
+.smoke-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 200%; height: 200%;
+  background: url("/smoke.png");
+  opacity: 0.15;
+  animation: smokeMove 40s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes smokeMove {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.camera-shake {
+  animation: shake 0.3s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(2px,-2px); }
+  50% { transform: translate(-2px,2px); }
+  75% { transform: translate(2px,2px); }
+  100% { transform: translate(0,0); }
+}
+
+.club-filter {
+  filter: contrast(1.2) saturate(1.4) brightness(0.9);
+}
+
+/* 360 Disco Işık Geçişi (Meyve tabağı yazısında kullanıldı) */
+.disco-light {
+  animation: disco 6s linear infinite;
+}
+
+@keyframes disco {
+  0% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(180deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* Para animasyonu (Senin verdiğin sınıf) */
+.money {
+  position: absolute;
+  width: 40px;
+  animation: moneyFall linear infinite;
+  /* Resim için: content: url('/money.png'); veya component içinden bas */
+}
+
+@keyframes moneyFall {
+  0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* Sahne Işığı Koni (Senin verdiğin yapı) */
+.light-cone {
+  position: absolute;
+  top: 0;
+  width: 300px;
+  height: 600px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.4),
+    rgba(255,255,255,0.05),
+    transparent
+  );
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  mix-blend-mode: screen;
+  opacity: 0.4;
+  animation: moveLight 4s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+@keyframes moveLight {
+  0% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+  100% { transform: rotate(-10deg); }
 }

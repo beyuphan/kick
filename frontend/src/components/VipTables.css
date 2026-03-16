@@ -7,70 +7,81 @@
   z-index: 20;
 }
 
+/* MASALARI YERE SIFIRLADIK */
 .vip-table-container {
   position: absolute;
-  /* 1. Biraz yukarı kaldırıldı (Eskisi 120px idi, 160px yapalım) */
-  bottom: 160px; 
-  /* 2. Konteyner boyutu büyütüldü (Eskisi 300px idi) */
-  width: 360px; 
+  bottom: 70px; 
+  width: 400px; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: all 0.3s ease-in-out;
 }
 
-.left { left: 10%; }
-.right { right: 10%; }
+.left { left: 5%; }
+.right { right: 5%; }
 
-/* GERÇEK MASA - İŞTE DERİNLİK BURADA */
+/* MASA GÖRSELİ (Esnemeleri ve piksel bozulmalarını engelledik) */
 .real-table-png {
-  /* 3. Masa boyutu büyütüldü (Eskisi 280px idi) */
-  width: 610px; 
+  width: 100%; 
   height: auto;
-  transform: perspective(800px) rotateX(45deg);
-  transform-origin: bottom center;
-  filter: drop-shadow(0 30px 25px rgba(0,0,0,0.8)) drop-shadow(0 0 35px #ff00ff);
+  transform: none; 
+  /* Sadece tok bir siyah gölge */
+  filter: drop-shadow(0 30px 25px rgba(0,0,0,0.95)); 
   z-index: 1;
 }
 
-/* 4. YENİ: Sadece SAĞDAKİ masanın görselini ayna efekti (ters çevirme) ile aynalıyoruz. 
-   Yazılar ters dönmesin diye sadece resme veriyoruz! */
+/* Sağdaki masayı aynala */
 .right .real-table-png {
-  transform: perspective(800px) rotateX(45deg) scaleX(-1);
+  transform: scaleX(-1);
 }
+
+/* CSS İLE MASA LAMBASI IŞIĞI (Masaya vuran sıcak sarı ışık) */
+.vip-table-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 60px;
+  background: radial-gradient(ellipse, rgba(255, 180, 50, 0.4) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: overlay;
+}
+
+/* VİP İSİMLERİN KONUMU */
 .members-list {
   position: absolute;
-  top: -80px; /* İsimleri masanın üstüne, havaya kaldırdık */
+  top: 25%; 
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
   align-items: center;
-  z-index: 2;
+  z-index: 3;
 }
+
 .vip-member {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 5px; 
-  background: transparent; /* Arka plan yok */
-  border: none; /* Çerçeve yok */
-  box-shadow: none; /* Kaba gölgeler yok */
+  background: transparent; 
+  border: none; 
+  box-shadow: none; 
   margin-bottom: 5px;
 }
 
-/* Gerçekçi Neon El Yazısı */
+/* VİP İSİM NEON EFEKTİ (Buz Mavisi) */
 .vip-name {
   font-family: 'Vibur', cursive;
-  font-size: 2.2rem; 
+  font-size: 2.4rem; 
   color: #fff;
-  text-shadow: 
-    0 0 2px #fff,
-    0 0 10px #ff00aa,
-    0 0 20px #ff00aa,
-    0 0 40px #ff00aa;
+  text-shadow: 0 0 5px #fff, 0 0 15px #00ffff, 0 0 30px #00ffff; 
+  margin: 0;
+  transform: rotate(-3deg); /* Çok hafif el yazısı eğimi */
   white-space: nowrap;
-  transform: rotate(-5deg);
 }
 
 .table-label {
