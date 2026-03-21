@@ -1,55 +1,100 @@
 /* src/components/DiscoBall.css */
 .disco-ball-wrapper {
   position: absolute;
-  top: 0;
+  /* Top daha heybetli olacağı için tavana biraz daha yakın konumlandırıyoruz */
+  top: -50px; 
   left: 50%;
   transform: translateX(-50%);
-  z-index: 15; /* Tabelanın ve ışıkların biraz üstünde dursun */
+  z-index: 15; 
   display: flex;
   flex-direction: column;
   align-items: center;
   pointer-events: none;
 }
 
-/* Tavandan inen ip/zincir */
+/* Tavandan inen ip/zincir - Boyunu koruyoruz */
 .disco-string {
   width: 4px;
-  height: 250px;
+  height: 120px;
   background: linear-gradient(to right, #444, #888, #444);
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 /* Disko Topunun Kendisi */
 .disco-ball {
-  width: 180px;
-  height: 180px;
+  /* BOYUTU BÜYÜTTÜK (140px'den 220px'e) */
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
-  /* Cam kırıkları/kareleri hissi veren gradient dokusu */
-  background-color: #ccc;
+  /* Daha koyu ve metalik bir temel renk verdik, bembeyaz değil */
+  background-color: #666;
   background-image: 
-    linear-gradient(45deg, rgba(255,255,255,0.6) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.6) 75%, rgba(255,255,255,0.6)), 
-    linear-gradient(-45deg, rgba(255,255,255,0.6) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.6) 75%, rgba(255,255,255,0.6));
+    linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.2) 75%, rgba(255,255,255,0.2)), 
+    linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.2) 75%, rgba(255,255,255,0.2));
   background-size: 15px 15px;
   
-  /* Topa 3 boyutlu bir yuvarlaklık katan gölgeler ve etrafa saçtığı renkli aura */
+  /* ÇOK KATMANLI, DEVASA DIŞ IŞIK VE GÖLGE SAÇILIMI */
   box-shadow: 
-    inset 0 0 20px rgba(0, 0, 0, 0.8), /* İç karartı */
-    inset 10px 0 20px rgba(255, 255, 255, 0.5), /* Sol ışık */
-    0 0 30px rgba(255, 0, 255, 0.6), /* Dış mor parlama */
-    0 0 60px rgba(0, 255, 255, 0.4); /* Dış mavi parlama */
+    /* İç gölge ve derinlik */
+    inset 0 0 40px rgba(0, 0, 0, 1), 
+    inset 20px 0 40px rgba(255, 255, 255, 0.8), 
+    /* Ana parlayan renk katmanları */
+    0 0 100px 10px rgba(255, 0, 255, 1), /* Magenta */
+    0 0 150px 20px rgba(0, 255, 255, 0.9), /* Cyan */
+    0 0 200px 30px rgba(255, 255, 0, 0.8); /* Sarı */
     
-  /* Hem kendi etrafında dönsün hem de renk aurası değişsin */
-  animation: spinBall 4s linear infinite, ballColorShift 6s linear infinite;
+  /* Dönme ve renk saçma animasyonlarını birleştirdik, daha uzun ve akıcı */
+  animation: spinBall 4s linear infinite, ballScatteringEffects 10s ease-in-out infinite;
 }
 
-/* Kendi etrafında dönme efekti (background'u kaydırarak yapıyoruz) */
+/* Dönme Animasyonu (Büyük desen için güncellendi) */
 @keyframes spinBall {
   0% { background-position: 0 0, 7.5px 7.5px; }
-  100% { background-position: 150px 0, 157.5px 7.5px; }
+  100% { background-position: 220px 0, 227.5px 7.5px; }
 }
 
-/* Etrafına saçtığı auranın renk değiştirmesi */
-@keyframes ballColorShift {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
+/* YENİ: HEM RENK HEM DE DIŞ IŞIK SAÇILIMINI DEĞİŞTİREN ANİMASYON */
+@keyframes ballScatteringEffects {
+  0% { 
+    filter: hue-rotate(0deg);
+    box-shadow: 
+      inset 0 0 40px rgba(0, 0, 0, 1), inset 20px 0 40px rgba(255, 255, 255, 0.8), 
+      0 0 100px 10px rgba(255, 0, 255, 1), 
+      0 0 150px 20px rgba(0, 255, 255, 0.9), 
+      0 0 200px 30px rgba(255, 255, 0, 0.8);
+  }
+  25% { 
+    filter: hue-rotate(90deg);
+    /* Işıklar daha da dışarı saçılıyor */
+    box-shadow: 
+      inset 0 0 40px rgba(0, 0, 0, 1), inset 20px 0 40px rgba(255, 255, 255, 0.8), 
+      0 0 120px 15px rgba(255, 255, 0, 1), 
+      0 0 180px 30px rgba(255, 0, 255, 0.9), 
+      0 0 240px 45px rgba(0, 255, 255, 0.8);
+  }
+  50% { 
+    filter: hue-rotate(180deg);
+    box-shadow: 
+      inset 0 0 40px rgba(0, 0, 0, 1), inset 20px 0 40px rgba(255, 255, 255, 0.8), 
+      0 0 100px 10px rgba(0, 255, 255, 1), 
+      0 0 150px 20px rgba(255, 255, 0, 0.9), 
+      0 0 200px 30px rgba(255, 0, 255, 0.8);
+  }
+  75% { 
+    filter: hue-rotate(270deg);
+    /* Işıklar tekrar dışarı saçılıyor */
+    box-shadow: 
+      inset 0 0 40px rgba(0, 0, 0, 1), inset 20px 0 40px rgba(255, 255, 255, 0.8), 
+      0 0 120px 15px rgba(0, 255, 255, 1), 
+      0 0 180px 30px rgba(0, 128, 0, 0.9), 
+      0 0 240px 45px rgba(255, 0, 0, 0.8);
+  }
+  100% { 
+    filter: hue-rotate(0deg);
+    box-shadow: 
+      inset 0 0 40px rgba(0, 0, 0, 1), inset 20px 0 40px rgba(255, 255, 255, 0.8), 
+      0 0 100px 10px rgba(255, 0, 255, 1), 
+      0 0 150px 20px rgba(0, 255, 255, 0.9), 
+      0 0 200px 30px rgba(255, 255, 0, 0.8);
+  }
 }

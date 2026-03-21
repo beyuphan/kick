@@ -11,6 +11,7 @@ import { Atmosphere } from './components/Atmosphere';
 import Particles from './components/Particles';
 import { DjLasers } from './components/DjLasers'; 
 import { DiscoBall } from './components/DiscoBall';
+import { DanceFloor } from './components/DanceFloor';
 
 function App() {
   useSocket();
@@ -35,6 +36,7 @@ function App() {
       
       {/* 3. KATMAN: Para yağmuru ve dansçılar */}
       <MoneyRain />
+      <DanceFloor />
       <Dancers />
 
       {/* 4. KATMAN: VIP Masalar */}

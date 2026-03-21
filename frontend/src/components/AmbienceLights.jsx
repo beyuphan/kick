@@ -7,6 +7,7 @@ export const AmbienceLights = () => (
     <div className="smoke-overlay" />
     
     {/* KENARDAKİ İNCE SPOTLAR */}
+   
     <div className="spot-container side-left">
       <img src="/spot-fixture.png" className="spot-fixture" alt="spot" />
       <div className="spotlight-beam beam-side-left" />
@@ -16,8 +17,8 @@ export const AmbienceLights = () => (
       <img src="/spot-fixture.png" className="spot-fixture" alt="spot" />
       <div className="spotlight-beam beam-side-right" />
     </div>
-
-    {/* ORTADAKİ ANA BÜYÜK SPOTLAR */}
+   
+ {/* 
     <div className="spot-container main-left">
       <div className="spotlight-beam beam-main-left" />
     </div>
@@ -25,5 +26,6 @@ export const AmbienceLights = () => (
     <div className="spot-container main-right">
       <div className="spotlight-beam beam-main-right" />
     </div>
+    */}
   </>
 );

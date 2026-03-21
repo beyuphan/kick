@@ -11,14 +11,14 @@
 .vip-table-container {
   position: absolute;
   bottom: 70px; 
-  width: 400px; 
+  width: 550px; 
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.left { left: 5%; }
-.right { right: 5%; }
+.left { left: 8%; }
+.right { right: 8%; }
 
 /* MASA GÖRSELİ (Esnemeleri ve piksel bozulmalarını engelledik) */
 .real-table-png {
@@ -26,7 +26,7 @@
   height: auto;
   transform: none; 
   /* Sadece tok bir siyah gölge */
-  filter: drop-shadow(0 30px 25px rgba(0,0,0,0.95)); 
+  filter: drop-shadow(0 40px 30px rgba(0,0,0,0.95)); /* Gölgeyi derinleştirdik */
   z-index: 1;
 }
 
@@ -42,7 +42,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 150px;
+  width: 180px;
   height: 60px;
   background: radial-gradient(ellipse, rgba(255, 180, 50, 0.4) 0%, transparent 70%);
   pointer-events: none;
@@ -56,7 +56,7 @@
   top: 25%; 
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
   align-items: center;
   z-index: 3;
@@ -76,7 +76,7 @@
 /* VİP İSİM NEON EFEKTİ (Buz Mavisi) */
 .vip-name {
   font-family: 'Vibur', cursive;
-  font-size: 2.4rem; 
+  font-size: 2.6rem; 
   color: #fff;
   text-shadow: 0 0 5px #fff, 0 0 15px #00ffff, 0 0 30px #00ffff; 
   margin: 0;

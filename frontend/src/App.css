@@ -13,10 +13,17 @@ body, #root, .pavyon-wrapper {
 .vignette-overlay {
   position: absolute;
   inset: 0;
-  /* Ortadaki %40'lık alan tamamen şeffaf, kenarlar ZİFİRİ KARANLIK */
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(10, 0, 10, 0.9) 80%, rgba(0, 0, 0, 1) 100%);
+  /* Ortası senin yüzün için şeffaf, kenarlar cayır cayır pembe ve mor */
+  background: radial-gradient(
+    ellipse at center, 
+    rgba(0, 0, 0, 0) 10%, 
+    rgba(255, 20, 147, 0.5) 40%, /* Derin Neon Pembe */
+    rgba(138, 43, 226, 0.85) 85% /* Koyu Elektrik Moru */
+  );
+  /* hard-light kamerandaki renkleri ezer ve kendi rengini (pembe/mor) baskın yapar */
+  mix-blend-mode: hard-light; 
   pointer-events: none;
-  z-index: 1;
+  z-index: 1; 
 }
 /* 2. YENİ: YÜZÜ AYDINLATAN SAHNE IŞIĞI (Seni ön plana çıkarır) */
 .center-glow {
@@ -24,13 +31,27 @@ body, #root, .pavyon-wrapper {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 40vw; /* Işığın çapını daralttık */
-  height: 40vh;
-  /* Yüzünü yakmasın diye pembeliği ve gücünü epey kıstık */
-  background: radial-gradient(circle, rgba(255, 100, 150, 0.08) 0%, transparent 60%);
+  width: 35vw; 
+  height: 35vh;
+  /* Yüzüne çok hafif, tatlı bir neon pembe yansıması vurur */
+  background: radial-gradient(circle, rgba(255, 0, 120, 0.15) 0%, transparent 60%);
   pointer-events: none;
   z-index: 2;
   mix-blend-mode: screen; 
+}
+
+/* GERÇEKÇİ SİGARA PUSU */
+.smoke-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 200%; height: 200%;
+  background: url("/smoke.png");
+  opacity: 0.15; /* Çok karanlıksa bunu biraz daha düşürebiliriz, örn 0.1 */
+  backdrop-filter: blur(2px); 
+  animation: smokeMove 40s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+  /* mix-blend-mode'u kaldırdık ki seni daha da karartmasın */
 }
 /* YERE ÇÖKEN SAHNE SİSİ */
 .smoke-overlay {
@@ -59,18 +80,20 @@ body, #root, .pavyon-wrapper {
   filter: blur(15px);
   transform-origin: top center;
   pointer-events: none;
-  z-index: 3;
+  z-index: 50;
+  mix-blend-mode: screen; /* Işıklar artık boya gibi değil, parlak duracak */
 }
-
 .spotlight-left {
   left: 5%;
-  background: linear-gradient(180deg, rgba(255, 0, 60, 0.35) 0%, rgba(255, 0, 150, 0.05) 70%, transparent 100%);
+  /* Tam pavyon kırmızısı/pembesi karışımı */
+  background: linear-gradient(180deg, rgba(255, 0, 80, 1) 0%, rgba(255, 0, 80, 0.1) 70%, transparent 100%);
   animation: sweepLeft 7s ease-in-out infinite alternate;
 }
 
 .spotlight-right {
   right: 5%;
-  background: linear-gradient(180deg, rgba(138, 43, 226, 0.35) 0%, rgba(0, 150, 255, 0.05) 70%, transparent 100%);
+  /* Derin, parlak mor */
+  background: linear-gradient(180deg, rgba(138, 43, 226, 1) 0%, rgba(138, 43, 226, 0.1) 70%, transparent 100%);
   animation: sweepRight 9s ease-in-out infinite alternate;
 }
 
@@ -95,13 +118,12 @@ body, #root, .pavyon-wrapper {
 /* Tavana asılı spot donanımı ve ışığın ana kabı */
 .spot-container {
   position: absolute;
-  top: -40px; /* Cihazlar tavana asılı dursun */
+  top: -40px; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 4;
+  z-index: 55; /* Işık cihazları her şeyin üstünde */
 }
-
 /* Cihazların tavandaki yerleşimi */
 .side-left { left: 5%; }
 .side-right { right: 5%; }
@@ -138,35 +160,39 @@ body, #root, .pavyon-wrapper {
   height: 120vh;
   clip-path: polygon(48% 0, 52% 0, 100% 100%, 0 100%);
   filter: blur(15px);
+  mix-blend-mode: screen; /* Gerçek lazer parlaması */
+
 }
 
 .beam-main-left {
-  background: linear-gradient(to bottom, rgba(255, 50, 80, 0.75) 0%, rgba(255, 50, 80, 0) 90%);
+  /* Cayır cayır neon pembe/kırmızı */
+  background: linear-gradient(to bottom, rgba(255, 20, 147, 1) 0%, rgba(255, 20, 147, 0) 50%);
   animation: sweepMainLeft 7s ease-in-out infinite alternate;
 }
 
 .beam-main-right {
-  background: linear-gradient(to bottom, rgba(138, 43, 226, 0.65) 0%, rgba(138, 43, 226, 0) 90%);
+  /* Elektrik moru */
+  background: linear-gradient(to bottom, rgba(148, 0, 211, 1) 0%, rgba(148, 0, 211, 0) 61%);
   animation: sweepMainRight 9s ease-in-out infinite alternate;
 }
-
 /* 2. YAN (İNCE) IŞIKLAR */
 .beam-side-left, .beam-side-right {
-  width: 15vw; /* Çok daha ince bir ışık hüzmesi */
+  width: 15vw; 
   height: 120vh;
   clip-path: polygon(49% 0, 51% 0, 100% 100%, 0 100%);
-  filter: blur(8px); /* Keskin ışık */
+  filter: blur(8px) brightness(1.5); 
+  mix-blend-mode: screen; 
 }
 
 .beam-side-left {
-  /* Kenarı tarayan buz mavisi lazerimsi ince spot */
-  background: linear-gradient(to bottom, rgba(0, 255, 255, 0.6) 0%, rgba(0, 255, 255, 0) 90%); 
+  /* Parlak gece mavisi/Lacivert */
+  background: linear-gradient(to bottom, rgba(0, 100, 255, 1) 0%, rgba(0, 100, 255, 0) 90%); 
   animation: sweepSideLeft 5s ease-in-out infinite alternate;
 }
 
 .beam-side-right {
-  /* Kenarı tarayan sarı ince spot */
-  background: linear-gradient(to bottom, rgba(255, 200, 50, 0.5) 0%, rgba(255, 200, 50, 0) 90%); 
+  /* Cırtlak neon magenta (mor/pembe) */
+  background: linear-gradient(to bottom, rgba(255, 0, 255, 1) 0%, rgba(255, 0, 255, 0) 90%); 
   animation: sweepSideRight 6s ease-in-out infinite alternate;
 }
 

@@ -1,0 +1,61 @@
+.dance-floor-container {
+  position: absolute;
+  bottom: -5%; /* Yere oturtmak için */
+  left: 0;
+  width: 100vw;
+  height: 25vh; /* Zemin yüksekliği */
+  perspective: 600px; /* 3D derinlik hissi veren asıl olay */
+  z-index: 1; /* Masaların (20) altında, arka planın üstünde */
+  pointer-events: none;
+  overflow: hidden; /* Dışarı taşanları gizle */
+}
+
+.dance-floor-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); /* 8 Sütun */
+  grid-template-rows: repeat(4, 1fr);    /* 4 Satır */
+  width: 140%; 
+  height: 150%;
+  /* Grid'i tam ortaya alıp geriye doğru (zemine) yatırıyoruz */
+  transform-origin: top center;
+  transform: translateX(-15%) rotateX(65deg); 
+  gap: 12px; /* Siyah birleştirme çıtaları */
+  background-color: #050505; /* Çıtaların rengi zifiri siyah */
+  border: 10px solid #050505;
+}
+
+/* Her bir kare panelin temel özelliği */
+.floor-panel {
+  background-color: #111;
+  border-radius: 2px;
+  animation: floorFlash 6s infinite alternate;
+  /* Cam gibi parlaması için iç gölge */
+  box-shadow: inset 0 0 20px rgba(255,255,255,0.4);
+}
+
+/* Farklı karelerin farklı zamanlarda yanması için delay'ler */
+.panel-type-1 { animation-delay: 0s; animation-duration: 4s; }
+.panel-type-2 { animation-delay: -1s; animation-duration: 5s; }
+.panel-type-3 { animation-delay: -2.5s; animation-duration: 3s; }
+.panel-type-4 { animation-delay: -4s; animation-duration: 6s; }
+.panel-type-5 { animation-delay: -1.5s; animation-duration: 4.5s; }
+
+/* Fotoğraftaki gibi Neon Mavi, Turuncu ve Pembe geçişleri */
+@keyframes floorFlash {
+  0% { 
+    background-color: rgba(0, 200, 255, 0.85); /* Neon Mavi */
+    box-shadow: 0 0 30px rgba(0, 200, 255, 0.5), inset 0 0 20px rgba(255,255,255,0.6); 
+  }
+  33% { 
+    background-color: rgba(255, 100, 0, 0.85); /* Sıcak Turuncu */
+    box-shadow: 0 0 30px rgba(255, 100, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.6); 
+  }
+  66% { 
+    background-color: rgba(255, 0, 150, 0.85); /* Neon Pembe */
+    box-shadow: 0 0 30px rgba(255, 0, 150, 0.5), inset 0 0 20px rgba(255,255,255,0.6); 
+  }
+  100% { 
+    background-color: rgba(138, 43, 226, 0.85); /* Elektrik Moru */
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.5), inset 0 0 20px rgba(255,255,255,0.6); 
+  }
+}
