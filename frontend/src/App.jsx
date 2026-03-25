@@ -6,12 +6,14 @@ import { VipTables } from './components/VipTables';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PavyonTicker } from './components/PavyonTicker';
 import { MoneyRain } from './components/MoneyRain';
-import { Dancers } from './components/Dancers';
 import { Atmosphere } from './components/Atmosphere';
+import { RoseRain } from './components/RoseRain'; 
 import Particles from './components/Particles';
 import { DjLasers } from './components/DjLasers'; 
 import { DiscoBall } from './components/DiscoBall';
 import { DanceFloor } from './components/DanceFloor';
+import { ActionAlert } from './components/ActionAlert';
+
 
 function App() {
   useSocket();
@@ -20,6 +22,8 @@ function App() {
 
   // Aksiyon varsa (meyve tabağı veya para yağmuru) ekranı sars!
   const isShaking = current?.type === 'ACTION' || moneyRainActive;
+
+  const strobeActive = usePavyonStore((state) => state.strobeActive);
 
   return (
     // club-filter ve duruma göre camera-shake eklendi
@@ -35,9 +39,11 @@ function App() {
       <Particles count={40} />
       
       {/* 3. KATMAN: Para yağmuru ve dansçılar */}
+      {strobeActive && <div className="strobe-overlay"></div>}
+      <ActionAlert />
       <MoneyRain />
+      <RoseRain /> 
       <DanceFloor />
-      <Dancers />
 
       {/* 4. KATMAN: VIP Masalar */}
       <VipTables />

@@ -8,6 +8,13 @@ export const usePavyonStore = create((set, get) => ({
   vipTables: { table1: [], table2: [] },
   moneyRainActive: false,
   dancers: [],
+  strobeActive: false,
+  roseRainActive: false,
+
+  // --- YENİ KUSURSUZ ALERT SİSTEMİ ---
+  alertQueue: [], // Kuyruk
+  currentAlert: null, // Şu an ekranda olan yazı
+
   occupyTable: (user) => set((state) => {
     const shortName = user.length > 10 ? user.substring(0, 10) + ".." : user;
     if (state.vipTables.table1.length < 2) {
@@ -39,6 +46,38 @@ export const usePavyonStore = create((set, get) => ({
   removeDancer: (id) => set((state) => ({
     dancers: state.dancers.filter(d => d.id !== id)
   })),
+
+  triggerAlert: (msg, type = 'default') => {
+    set((state) => {
+      const newAlert = { id: Date.now() + Math.random(), msg, type };
+      // Ekranda uyarı yoksa hemen göster, varsa kuyruğa at
+      if (!state.currentAlert) {
+        return { currentAlert: newAlert };
+      }
+      return { alertQueue: [...state.alertQueue, newAlert] };
+    });
+  },
+  
+  nextAlert: () => {
+    set((state) => {
+      // Kuyrukta adam varsa onu ekrana al, yoksa ekranı temizle
+      if (state.alertQueue.length > 0) {
+        return { 
+          currentAlert: state.alertQueue[0], 
+          alertQueue: state.alertQueue.slice(1) 
+        };
+      }
+      return { currentAlert: null };
+    });
+  },
+  triggerStrobe: () => {
+    set({ strobeActive: true });
+    setTimeout(() => set({ strobeActive: false }), 4000); // 4 saniye çakar
+  },
+  triggerRoseRain: () => {
+    set({ roseRainActive: true });
+    setTimeout(() => set({ roseRainActive: false }), 6000);
+  },
   // Sıradaki animasyona geç
   next: () => {
     const { queue } = get();

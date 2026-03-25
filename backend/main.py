@@ -57,9 +57,9 @@ async def event_isleyici(event, data):
 
             # Eylem Komutları
             if content == "!meyve":
-                if bakiye_harca(user, 500):
-                    print(f"🍊 [EYLEM] {user} meyve tabağı patlattı!")
-                    await sio.emit('action', {'type': 'fruit', 'user': user})
+                if bakiye_harca(user, 300):
+                    print(f"🍊 [EYLEM] {user} masalara meyve tabağı gönderdi!")
+                    await sio.emit('meyve_trigger', {'user': user})
                 else:
                     print(f"⚠️ [RED] {user} bakiyesi yetersiz.")
 
@@ -81,14 +81,10 @@ async def event_isleyici(event, data):
                 vip_count = 0
                 await sio.emit('reset_ui')
 
-            elif content == "!dans":
-                if bakiye_harca(user, 1000):
-                    print(f"💃 [EYLEM] {user} pisti kapattı!")
-                    await sio.emit('action', {'type': 'dance', 'user': user})
-
             elif content == "!pavyon":
                 print(f"🕺 [GİRİŞ] {user} pavyona giriş yaptı.")
                 await sio.emit('pavyon_join', {'user': user})
+
             elif content == "!bahsis":
                 if bakiye_harca(user, 100): # Her bahşiş 100 puan olsun
                     print(f"💸 [BAHŞİŞ] {user} para saçıyor!")
@@ -100,19 +96,58 @@ async def event_isleyici(event, data):
                 if bakiye_harca(user, 300):
                     print(f"💃 [DANS] {user} pisti hareketlendirdi!")
                     await sio.emit('dance_trigger', {'user': user})
+            elif content == "!sampanya":
+                if bakiye_harca(user, 2000): # Şampanya pahalıdır :)
+                    print(f"🍾 [ŞAMPANYA] {user} şampanya patlattı!")
+                    await sio.emit('action_alert', {
+                        'type': 'champagne', 
+                        'user': user, 
+                        'message': f"🍾 {user} ŞAMPANYA PATLATTI! 🍾"
+                    })
+                else:
+                    print(f"❌ [RED] {user} parası yetersiz.")
 
-            elif content == "!bakiye":
-                # Veritabanından bakiyeyi çekip ekrana veya loga basıyoruz
-                conn = sqlite3.connect('pavyon.db')
-                cursor = conn.cursor()
-                cursor.execute("SELECT balance FROM users WHERE username = ?", (user,))
-                row = cursor.fetchone()
-                bakiye = row[0] if row else 0
-                conn.close()
+            elif content == "!cakar":
+                if bakiye_harca(user, 1000):
+                    print(f"🚨 [ÇAKAR] {user} ışıkları çıldırttı!")
+                    await sio.emit('strobe_lights', {'user': user})
+                else:
+                    print(f"❌ [RED] {user} parası yetersiz.")
+
+            elif content == "!gul":
+                if bakiye_harca(user, 500):
+                    print(f"🌹 [GÜL] {user} gül döktürdü!")
+                    await sio.emit('rose_rain', {'user': user})
+
+            elif content.startswith("!bakiye"):
+                parts = content.split()
                 
-                print(f"💰 [BİLGİ] {user} bakiyesi: {bakiye}")
-                # Kullanıcıya özel bakiye göstergesi fırlatalım
-                await sio.emit('show_balance', {'user': user, 'balance': bakiye})
+                if len(parts) == 3 and user == "rizelimichaelscofield":
+                    try:
+                        miktar = int(parts[1])
+                        hedef_kisi = parts[2]
+                        
+                        yeni_bakiye = bakiye_ekle(hedef_kisi, miktar)
+                        print(f"👑 [YÖNETİCİ] {user}, {hedef_kisi} adlı kişiye {miktar} kredi ekledi! (Yeni Bakiyesi: {yeni_bakiye})")
+                        
+                        # İstersen chate veya ekrana da bilgi geçebilirsin
+                        await sio.emit('chat_message', {'msg': f"Gazinonun ağası {hedef_kisi} kişisine {miktar} kredi ateşledi!"})
+                        
+                    except ValueError:
+                        print(f"❌ [HATA] Yanlış format. Doğrusu: !bakiye 5000 kullaniciadi")
+                
+                # Sadece "!bakiye" yazılmışsa (Herkesin kendi bakiyesini görmesi için eski komut)
+                elif len(parts) == 1:
+                    import sqlite3 # Eğer yukarıda import edilmemişse diye buraya ekledik
+                    conn = sqlite3.connect('pavyon.db')
+                    cursor = conn.cursor()
+                    cursor.execute("SELECT balance FROM users WHERE username = ?", (user,))
+                    row = cursor.fetchone()
+                    bakiye = row[0] if row else 0
+                    conn.close()
+                    
+                    print(f"💰 [BİLGİ] {user} bakiyesi: {bakiye}")
+                    await sio.emit('show_balance', {'user': user, 'balance': bakiye})
 
     except Exception as e:
         print(f"⚠️ Hata: {e}")

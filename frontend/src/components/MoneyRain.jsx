@@ -1,4 +1,3 @@
-// src/components/MoneyRain.jsx
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { usePavyonStore } from '../store/usePavyonStore';
@@ -22,8 +21,10 @@ export const MoneyRain = () => {
       {bills.map((bill) => (
         <motion.div
           key={bill.id}
-          initial={{ y: '110vh', opacity: 1, rotate: 0 }}
-          animate={{ y: '-20vh', opacity: 0, rotate: 360 }}
+          // YUKARIDAN (-20vh) başlasın
+          initial={{ y: '-20vh', opacity: 1, rotate: 0 }}
+          // AŞAĞIYA (110vh) düşsün ve düşerken GÖRÜNÜR kalsın
+          animate={{ y: '110vh', opacity: 1, rotate: 360 }}
           transition={{ 
             duration: bill.duration, 
             delay: bill.delay, 
