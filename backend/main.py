@@ -10,7 +10,7 @@ from kick_client import KickClient
 
 load_dotenv()
 
-BAKIYE_ODUL_ADI = "MesajÄ±nÄ± vurgula"
+BAKIYE_ODUL_ADI = "PAVYON 500 BAKİYE"
 
 
 
@@ -40,7 +40,7 @@ async def event_isleyici(event, data):
             
             # Sadece belirlediğimiz ödül ise bakiye ekle
             if reward_title == BAKIYE_ODUL_ADI:
-                yeni = bakiye_ekle(user, 1000)
+                yeni = bakiye_ekle(user, 500)
                 print(f"💰 [BAKİYE EKLENDİ] {user} -> {BAKIYE_ODUL_ADI} (Güncel: {yeni})")
                 await sio.emit('reward', {'user': user, 'balance': yeni})
             else:
@@ -50,14 +50,15 @@ async def event_isleyici(event, data):
         # 2. CHAT KOMUTLARI (!EYLEM)
         elif "ChatMessageEvent" in event:
             user = inner.get('sender', {}).get('username')
-            content = inner.get('content', '').strip().lower()
+            raw_content = inner.get('content', '').strip() # Orijinal halini tut (büyük/küçük harf dahil)
+            content = raw_content.lower()
             
             # Metadata kirliliği bitti, sadece temiz log
             print(f"💬 [CHAT] {user}: {content}")
 
             # Eylem Komutları
             if content == "!meyve":
-                if bakiye_harca(user, 300):
+                if bakiye_harca(user, 50):
                     print(f"🍊 [EYLEM] {user} masalara meyve tabağı gönderdi!")
                     await sio.emit('meyve_trigger', {'user': user})
                 else:
@@ -65,7 +66,7 @@ async def event_isleyici(event, data):
 
             elif content == "!vip":
                 if vip_count < 4:
-                    if bakiye_harca(user, 2000): # VIP masa daha pahalı olsun kanka
+                    if bakiye_harca(user, 600):
                         vip_count += 1
                         print(f"🛋️ [VIP] {user} masaya geçti. (Kapasite: {vip_count}/4)")
                         await sio.emit('occupy_table', {'user': user})
@@ -82,22 +83,26 @@ async def event_isleyici(event, data):
                 await sio.emit('reset_ui')
 
             elif content == "!pavyon":
-                print(f"🕺 [GİRİŞ] {user} pavyona giriş yaptı.")
-                await sio.emit('pavyon_join', {'user': user})
+                if bakiye_harca(user, 100): 
+                    print(f"🕺 [GİRİŞ] {user} pavyona giriş yaptı.")
+                    await sio.emit('pavyon_join', {'user': user})
+                else:
+                    print(f"❌ [RED] {user} parası yetersiz.")
 
             elif content == "!bahsis":
-                if bakiye_harca(user, 100): # Her bahşiş 100 puan olsun
+                if bakiye_harca(user, 350): # Her bahşiş 100 puan olsun
                     print(f"💸 [BAHŞİŞ] {user} para saçıyor!")
                     await sio.emit('money_rain', {'user': user})
                 else:
                     print(f"❌ [RED] {user} parası yetersiz.")
 
             elif content == "!dans":
-                if bakiye_harca(user, 300):
+                if bakiye_harca(user, 150):
                     print(f"💃 [DANS] {user} pisti hareketlendirdi!")
                     await sio.emit('dance_trigger', {'user': user})
+
             elif content == "!sampanya":
-                if bakiye_harca(user, 2000): # Şampanya pahalıdır :)
+                if bakiye_harca(user, 200): # Şampanya pahalıdır :)
                     print(f"🍾 [ŞAMPANYA] {user} şampanya patlattı!")
                     await sio.emit('action_alert', {
                         'type': 'champagne', 
@@ -108,19 +113,24 @@ async def event_isleyici(event, data):
                     print(f"❌ [RED] {user} parası yetersiz.")
 
             elif content == "!cakar":
-                if bakiye_harca(user, 1000):
+                if bakiye_harca(user, 400):
                     print(f"🚨 [ÇAKAR] {user} ışıkları çıldırttı!")
                     await sio.emit('strobe_lights', {'user': user})
                 else:
                     print(f"❌ [RED] {user} parası yetersiz.")
 
             elif content == "!gul":
-                if bakiye_harca(user, 500):
+                if bakiye_harca(user, 250):
                     print(f"🌹 [GÜL] {user} gül döktürdü!")
                     await sio.emit('rose_rain', {'user': user})
+            
+            elif content == "!corap":
+                if bakiye_harca(user, 200):
+                    print(f"🌹 [GÜL] {user} ayak yaladı!")
+                    await sio.emit('corap', {'user': user})
 
             elif content.startswith("!bakiye"):
-                parts = content.split()
+                parts = raw_content.split()
                 
                 if len(parts) == 3 and user == "rizelimichaelscofield":
                     try:

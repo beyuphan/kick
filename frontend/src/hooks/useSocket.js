@@ -7,21 +7,29 @@ const socket = io('http://127.0.0.1:5000', {
   forceNew: true,
   reconnectionAttempts: 5
 });
-
-
+const lastPlayed = {
+  champagne: 0,
+  airhorn: 0
+};
 const playSound = (type) => {
+  const now = Date.now();
+  // Eğer aynı ses son 2 saniye içinde çalındıysa, tekrar çalma (Çift tetiklemeyi engeller)
+  if (now - lastPlayed[type] < 2000) return; 
+  
+  lastPlayed[type] = now;
+
   let audio;
   if (type === 'champagne') audio = new Audio('/sounds/champagne.mp3');
   if (type === 'airhorn') audio = new Audio('/sounds/airhorn.mp3'); 
   
   if (audio) {
-    audio.volume = 0.4;
-    audio.play().catch(e => console.log("Ses çalınamadı (Tarayıcı izni gerekebilir):", e));    
+    audio.volume = 0.3;
+    audio.play().catch(e => console.log("Ses çalınamadı:", e));    
 
     setTimeout(() => {
       audio.pause();
       audio.currentTime = 0;
-    }, 1000); // Tam 1 saniye (1000ms)
+    }, 1000); // 1 saniye sonra susturma kuralın burada
   }
 };
 
@@ -37,6 +45,7 @@ export const useSocket = () => {
   const triggerAlert = usePavyonStore((state) => state.triggerAlert);
   const triggerStrobe = usePavyonStore((state) => state.triggerStrobe);
   const triggerRoseRain = usePavyonStore((state) => state.triggerRoseRain);
+  const triggerCorap = usePavyonStore((state) => state.triggerCorap);
 
   useEffect(() => {
     socket.on('pavyon_join', (data) => addPavyonUser(data.user));
@@ -63,6 +72,8 @@ export const useSocket = () => {
       if (data.type === 'champagne') playSound('champagne');
     });
 
+    
+
     // Çakar Işıklar (Ekranda flaş patlaması ve korna sesi)
     socket.on('strobe_lights', (data) => {
       console.log('🚨 Çakar Işıklar Açıldı:', data?.user);
@@ -78,6 +89,11 @@ export const useSocket = () => {
       triggerRoseRain();
     });
 
+    socket.on('corap', (data) => {
+      console.log('corap yağıyor:', data?.user);
+      triggerAlert(`🌹 ${data.user} MASALARA ayak DÖKTÜRDÜ!`); 
+      triggerCorap();
+    });
 
     socket.on('meyve_trigger', (data) => {
       console.log('🍊 Meyve tabağı geldi:', data.user);
@@ -107,10 +123,11 @@ export const useSocket = () => {
       socket.off('rose_rain');
       socket.off('meyve_trigger');
       socket.off('dance_trigger'); 
+      socket.off('corap');
     };
   }, [
     addEvent, addPavyonUser, occupyTable, resetUI, triggerMoneyRain,
-    triggerAlert, triggerStrobe, triggerRoseRain, addDancer
+    triggerAlert, triggerStrobe, triggerRoseRain, addDancer, triggerCorap
   ]);
 
 };

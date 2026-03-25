@@ -4,7 +4,7 @@ def init_db():
     conn = sqlite3.connect('pavyon.db')
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS users 
-                     (username TEXT PRIMARY KEY, balance INTEGER DEFAULT 0)''')
+                     (username TEXT PRIMARY KEY COLLATE NOCASE, balance INTEGER DEFAULT 0)''')
     conn.commit()
     conn.close()
     print("📇 Kara Defter (DB) hazır.")

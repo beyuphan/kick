@@ -13,7 +13,8 @@ import { DjLasers } from './components/DjLasers';
 import { DiscoBall } from './components/DiscoBall';
 import { DanceFloor } from './components/DanceFloor';
 import { ActionAlert } from './components/ActionAlert';
-import { Dancers } from './components/Dancers'; // Eğer ayrı dosyaysa
+import { Dancers } from './components/Dancers'; 
+import { CorapRain } from './components/CorapRain';
 
 function App() {
   useSocket();
@@ -42,6 +43,7 @@ function App() {
       <ActionAlert />
       <MoneyRain />
       <RoseRain /> 
+      <CorapRain />
       <DanceFloor />
       <Dancers /> 
       {/* 4. KATMAN: VIP Masalar */}

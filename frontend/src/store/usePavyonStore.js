@@ -92,6 +92,12 @@ export const usePavyonStore = create((set, get) => ({
     setTimeout(() => set({ roseRainActive: false }), 6000);
   },
 
+   triggerCorap: () => {
+    set({ corapActive: true });
+    setTimeout(() => set({ corapActive: false }), 6000);
+  },
+
+
   // Dansçı Yönetimi
   addDancer: () => set((state) => {
   // Ekranda zaten 8 kişi varsa daha fazla ekleme
