@@ -26,7 +26,7 @@ const VipTable = ({ title, members, side }) => (
             {/* Oraya gerçekten biri oturmuş hissi vermek için avatar */}
             <div className="avatar-ikon">👤</div> 
             <span className="vip-name">
-              {user.substring(0, 10)}{user.length > 10 ? '..' : ''}
+              {user.substring(0, 10)}{user.length > 15 ? '..' : ''}
             </span>
           </motion.div>
         ))}

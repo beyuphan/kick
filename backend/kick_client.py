@@ -23,5 +23,11 @@ class KickClient:
     def start(self, callback):
         self.callback = callback
         print("🔌 [SİSTEM] Kick bağlantısı başlatılıyor...")
-        ws = websocket.WebSocketApp(self.url, on_message=self.on_message)
+        
+        # You MUST use WebSocketApp for run_forever() to work
+        ws = websocket.WebSocketApp(
+            self.url, 
+            on_message=self.on_message
+        )
+        
         ws.run_forever()

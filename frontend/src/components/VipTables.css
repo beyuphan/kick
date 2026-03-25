@@ -87,3 +87,21 @@
 .table-label {
   display: none; 
 }
+
+/* src/components/VipTables.css */
+
+/* Soldaki masada (Loca 1) */
+.left .seat-0 { transform: translateX(-35px) rotate(-4deg); } /* İlk isim biraz daha solda */
+.left .seat-1 { transform: translateX(35px) rotate(2deg); }   /* İkinci isim biraz sağda */
+
+/* Sağdaki masada (Loca 2) */
+.right .seat-0 { transform: translateX(-35px) rotate(-2deg); }
+.right .seat-1 { transform: translateX(35px) rotate(4deg); }
+
+/* İsimlerin neon efektini koru */
+.vip-name {
+  font-family: 'Vibur', cursive;
+  font-size: 2.8rem;
+  color: #fff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+}

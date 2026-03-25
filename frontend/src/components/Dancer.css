@@ -1,0 +1,33 @@
+/* src/components/Dancer.css */
+
+.pavyon-dancer-sprite {
+  /* Bir karenin genişliği (6040 / 11) */
+  width: 549px; 
+  height: 544px;
+  
+  /* Public klasörüne kaydettiğin dosya */
+  background: url('/dancer_sprite.svg') no-repeat;
+  background-size: 6040px 544px;
+  
+  /* steps(11): 11 kareyi tek tek atlayarak oynat */
+  /* 1s: Dans hızı (Hızlandırmak için 0.8s yapabilirsin) */
+  animation: pavyon-dance-steps 1s steps(11) infinite;
+  
+  /* Pavyon neon efekti */
+  filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.8));
+  
+  /* Dansçıyı merkeze al ve küçült (Ekranı kaplamasın diye) */
+  transform: translate(-50%, -50%) scale(0.6); 
+  transform-origin: center;
+  pointer-events: none;
+}
+
+@keyframes pavyon-dance-steps {
+  from { background-position: 0 0; }
+  to { background-position: -6040px 0; }
+}
+
+.dancer-container {
+  position: absolute;
+  z-index: 45;
+}

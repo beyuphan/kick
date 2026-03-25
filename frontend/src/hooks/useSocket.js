@@ -15,8 +15,13 @@ const playSound = (type) => {
   if (type === 'airhorn') audio = new Audio('/sounds/airhorn.mp3'); 
   
   if (audio) {
-    audio.volume = 1.0;
-    audio.play().catch(e => console.log("Ses çalınamadı (Tarayıcı izni gerekebilir):", e));
+    audio.volume = 0.4;
+    audio.play().catch(e => console.log("Ses çalınamadı (Tarayıcı izni gerekebilir):", e));    
+
+    setTimeout(() => {
+      audio.pause();
+      audio.currentTime = 0;
+    }, 1000); // Tam 1 saniye (1000ms)
   }
 };
 
@@ -27,7 +32,7 @@ export const useSocket = () => {
   const occupyTable = usePavyonStore((state) => state.occupyTable);
   const resetUI = usePavyonStore((state) => state.resetUI);
   const triggerMoneyRain = usePavyonStore((state) => state.triggerMoneyRain);
-
+  const addDancer = usePavyonStore((state) => state.addDancer);
   // YENİ Aksiyonlar (Şampanya, Çakar, Gül)
   const triggerAlert = usePavyonStore((state) => state.triggerAlert);
   const triggerStrobe = usePavyonStore((state) => state.triggerStrobe);
@@ -46,7 +51,10 @@ export const useSocket = () => {
     });
 
 
-
+    socket.on('dance_trigger', (data) => {
+      addDancer(); // Store'daki dansçı ekleme fonksiyonu
+      triggerAlert(`${data.user} sahnede şov yapıyor!`, 'dance');
+    });
 
   
     socket.on('action_alert', (data) => {
@@ -98,10 +106,11 @@ export const useSocket = () => {
       socket.off('strobe_lights');
       socket.off('rose_rain');
       socket.off('meyve_trigger');
+      socket.off('dance_trigger'); 
     };
   }, [
     addEvent, addPavyonUser, occupyTable, resetUI, triggerMoneyRain,
-    triggerAlert, triggerStrobe, triggerRoseRain
+    triggerAlert, triggerStrobe, triggerRoseRain, addDancer
   ]);
 
 };

@@ -13,7 +13,7 @@ import { DjLasers } from './components/DjLasers';
 import { DiscoBall } from './components/DiscoBall';
 import { DanceFloor } from './components/DanceFloor';
 import { ActionAlert } from './components/ActionAlert';
-
+import { Dancers } from './components/Dancers'; // Eğer ayrı dosyaysa
 
 function App() {
   useSocket();
@@ -28,7 +28,6 @@ function App() {
   return (
     // club-filter ve duruma göre camera-shake eklendi
     <div className={`pavyon-wrapper ${isShaking ? 'camera-shake' : ''}`}>
-      
       {/* 1. KATMAN: Görüntünü (yayıncıyı) loşlaştıracak olan efekt */}
       <div className="vignette-overlay" />
 
@@ -44,7 +43,7 @@ function App() {
       <MoneyRain />
       <RoseRain /> 
       <DanceFloor />
-
+      <Dancers /> 
       {/* 4. KATMAN: VIP Masalar */}
       <VipTables />
 
