@@ -1,9 +1,9 @@
 /* src/components/DiscoBall.css */
-.disco-ball-wrapper {
+.disco-ball-left {
   position: absolute;
   /* Konumu bozmadık */
   top: -50px; 
-  left: 50%;
+  left: 80%;
   transform: translateX(-50%);
   z-index: 15; 
   display: flex;
@@ -12,6 +12,18 @@
   pointer-events: none;
 }
 
+.disco-ball-right {
+  position: absolute;
+  /* Konumu bozmadık */
+  top: -50px; 
+  left: 20%;
+  transform: translateX(-50%);
+  z-index: 15; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
 /* Tavandan inen ip/zincir - Olduğu gibi bıraktık */
 .disco-string {
   width: 4px;

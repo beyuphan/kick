@@ -5,8 +5,16 @@ import './DiscoBall.css';
 export const DiscoBall = () => {
   return (
     <div className="disco-ball-wrapper">
-      <div className="disco-string"></div>
-      <div className="disco-ball"></div>
+      <div className="disco-ball-left">      
+        <div className="disco-string"></div>
+        <div className="disco-ball"></div>
+      </div>
+
+
+      <div className="disco-ball-right">      
+        <div className="disco-string"></div>
+        <div className="disco-ball"></div>
+      </div>
     </div>
   );
 };

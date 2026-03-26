@@ -1,7 +1,5 @@
-vip masalar süreli olacak
-sarışın abla
-https://codepen.io/urfrndlynghbrhd/pen/dyMOEvr
-nickname takipçi dğeilse veritabanına yükleme
-vip masalar için bakiye kullanımı yeterliş olmayacak abone kontrolü olmalı
-vip masalarda nickname yerleri düzeltilecek
-camoon
+disko topu ortada değil solda sağda olmalı ok
+paralar aşağıdan atılacak
+vip düzeltilecek 
+alert yüzde 20 büyült ok
+hatunlar ortada maks 5 tane

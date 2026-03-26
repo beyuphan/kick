@@ -100,16 +100,16 @@ export const usePavyonStore = create((set, get) => ({
 
   // Dansçı Yönetimi
   addDancer: () => set((state) => {
-  // Ekranda zaten 8 kişi varsa daha fazla ekleme
-  if (state.dancers.length >= 8) {
-    console.log("🚫 [SİSTEM] Pist dolu, maksimum 8 dansçı!");
+  // Ekranda zaten 6 kişi varsa daha fazla ekleme
+  if (state.dancers.length >= 6) {
+    console.log("🚫 [SİSTEM] Pist dolu, maksimum 6 dansçı!");
     return state;
   }
   
   return {
     dancers: [
       ...state.dancers, 
-      { id: Date.now() + Math.random(), x: Math.random() * 80, y: 20 + Math.random() * 40 }
+      { id: Date.now() + Math.random(), x: 35 + Math.random() * 30, y: 65 + Math.random() * 15 }
     ]
   };
 }),

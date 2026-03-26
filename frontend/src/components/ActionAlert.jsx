@@ -19,13 +19,13 @@ export const ActionAlert = () => {
     // Kapsayıcıyı sol üste sabitledik
     <div style={{ 
       position: 'fixed', 
-      top: '20px', 
-      left: '20px', 
+      top: '30px', 
+      left: '30px', 
       pointerEvents: 'none', 
       zIndex: 9999, 
       display: 'flex', 
       flexDirection: 'column',
-      gap: '10px' 
+      gap: '20px' 
     }}>
       <AnimatePresence mode="wait">
         {currentAlert && (
@@ -39,19 +39,19 @@ export const ActionAlert = () => {
             style={{
               background: 'rgba(20, 0, 20, 0.85)',
               backdropFilter: 'blur(8px)', // Arkayı hafif bulanıklaştırır, kalite katar
-              border: '2px solid #ff007f',
+              border: '3px solid #ff007f',
               boxShadow: '0 0 15px rgba(255, 0, 127, 0.4)',
               color: '#fff',
-              padding: '12px 20px', // Daha dar padding
+              padding: '16px 24px', // Daha dar padding
               borderRadius: '12px', // Daha modern köşe
-              fontSize: '0.9rem', // Küçük ve okunaklı
+              fontSize: '1.2rem', // Küçük ve okunaklı
               fontWeight: '700',
               textAlign: 'left',
               textTransform: 'uppercase',
               textShadow: '0 0 8px #ff007f',
-              maxWidth: '250px', // Genişliği sınırladık
+              maxWidth: '400px', // Genişliği sınırladık
               wordWrap: 'break-word',
-              borderLeft: '5px solid #ff007f' // Sol tarafa vurgu çizgisi
+              borderLeft: '8px solid #ff007f' // Sol tarafa vurgu çizgisi
             }}
           >
             {currentAlert.msg}
