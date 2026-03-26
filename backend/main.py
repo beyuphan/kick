@@ -70,6 +70,14 @@ async def event_isleyici(event, data):
                         vip_count += 1
                         print(f"🛋️ [VIP] {user} masaya geçti. (Kapasite: {vip_count}/4)")
                         await sio.emit('occupy_table', {'user': user})
+                    
+                        async def auto_release():
+                            await asyncio.sleep(180)
+                            global vip_count
+                            if vip_count > 0:
+                                vip_count -= 1
+                            
+                            asyncio.create_task(auto_release())
                     else:
                         print(f"❌ [RED] {user} parası yetmedi.")
                 else:
