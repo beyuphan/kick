@@ -1,5 +1,7 @@
 disko topu ortada değil solda sağda olmalı ok
-paralar aşağıdan atılacak
-vip düzeltilecek 
 alert yüzde 20 büyült ok
-hatunlar ortada maks 5 tane
+hatunlar ortada maks 5 tane ok
+paralar aşağıdan atılacak ok
+
+
+vip düzeltilecek 

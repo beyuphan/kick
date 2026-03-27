@@ -16,9 +16,10 @@ body, #root, .pavyon-wrapper {
   /* Ortası senin yüzün için şeffaf, kenarlar cayır cayır pembe ve mor */
   background: radial-gradient(
     ellipse at center, 
-    rgba(0, 0, 0, 0) 10%, 
-    rgba(255, 20, 147, 0.5) 40%, /* Derin Neon Pembe */
-    rgba(138, 43, 226, 0.85) 85% /* Koyu Elektrik Moru */
+    rgba(0, 0, 0, 0) 20%, 
+    rgba(0, 0, 0, 0) 40%,
+    rgba(255, 20, 147, 0.3) 60%, /* Derin Neon Pembe */
+    rgba(138, 43, 226, 0.75) 85% /* Koyu Elektrik Moru */
   );
   /* hard-light kamerandaki renkleri ezer ve kendi rengini (pembe/mor) baskın yapar */
   mix-blend-mode: hard-light; 
@@ -28,13 +29,13 @@ body, #root, .pavyon-wrapper {
 /* 2. YENİ: YÜZÜ AYDINLATAN SAHNE IŞIĞI (Seni ön plana çıkarır) */
 .center-glow {
   position: absolute;
-  top: 50%;
+  top: 30%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 35vw; 
-  height: 35vh;
+  transform: translate(-50%, -30%);
+  width: 65vw; 
+  height: 65vh;
   /* Yüzüne çok hafif, tatlı bir neon pembe yansıması vurur */
-  background: radial-gradient(circle, rgba(255, 0, 120, 0.15) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(255, 0, 120, 0.10) 0%, transparent 60%);
   pointer-events: none;
   z-index: 2;
   mix-blend-mode: screen; 
