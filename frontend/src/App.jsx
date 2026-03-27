@@ -15,8 +15,10 @@ import { DanceFloor } from './components/DanceFloor';
 import { ActionAlert } from './components/ActionAlert';
 import { Dancers } from './components/Dancers'; 
 import { CorapRain } from './components/CorapRain';
+import { AdminPanel } from './components/AdminPanel';
 
 function App() {
+
   useSocket();
   const current = usePavyonStore((state) => state.current);
   const moneyRainActive = usePavyonStore((state) => state.moneyRainActive);
@@ -26,6 +28,9 @@ function App() {
 
   const strobeActive = usePavyonStore((state) => state.strobeActive);
 
+   if (window.location.pathname === '/panel') {
+    return <AdminPanel />;
+  }
   return (
     // club-filter ve duruma göre camera-shake eklendi
     <div className={`pavyon-wrapper ${isShaking ? 'camera-shake' : ''}`}>

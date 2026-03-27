@@ -12,7 +12,8 @@ export const usePavyonStore = create((set, get) => ({
   roseRainActive: false,
   alertQueue: [], // Alert kuyruğu
   currentAlert: null, // Şu an ekranda olan yazı
-
+  eventHistory: [], 
+  balances: [],
   // --- ACTIONS ---
 
   // VIP Masaya Oturma ve 3 Dakika Sınırı
@@ -52,6 +53,14 @@ export const usePavyonStore = create((set, get) => ({
       [tableName]: state.vipTables[tableName].filter(name => name !== userName)
     }
   })),
+  // --- YENİ PANEL ACTIONS ---
+  addHistoryItem: (message) => set((state) => {
+    const timestamp = new Date().toLocaleTimeString('tr-TR', { hour12: false });
+    return {
+      eventHistory: [{ time: timestamp, msg: message }, ...state.eventHistory].slice(0, 50) // Sadece son 50 olayı tutar (Şişmesin)
+    };
+  }),
+  setBalances: (balances) => set({ balances }),
 
   // Pavyona Giriş Yapanları Listeye Ekleme
   addPavyonUser: (user) => set((state) => {
@@ -109,7 +118,7 @@ export const usePavyonStore = create((set, get) => ({
   return {
     dancers: [
       ...state.dancers, 
-      { id: Date.now() + Math.random(), x: 35 + Math.random() * 30, y: 65 + Math.random() * 15 }
+      { id: Date.now() + Math.random(), x: 35 + Math.random() * 30, y: 75 + Math.random() * 15 }
     ]
   };
 }),

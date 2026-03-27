@@ -11,7 +11,7 @@ export const Dancer = ({ id, x, y, onComplete }) => {
       exit={{ scale: 0, opacity: 0 }}
       onAnimationComplete={() => {
         // Dansçı 8 saniye sahnede kalsın
-        setTimeout(onComplete, 8000);
+        setTimeout(onComplete, 10000);
       }}
       className="dancer-container"
       style={{ left: `${x}%`, top: `${y}%` }}

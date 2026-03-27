@@ -7,6 +7,7 @@ from aiohttp import web
 from dotenv import load_dotenv
 from database import init_db, bakiye_ekle, bakiye_harca
 from kick_client import KickClient
+import sqlite3
 
 load_dotenv()
 
@@ -27,6 +28,19 @@ loop = None
 
 vip_count = 0
 
+@sio.on('get_all_balances')
+async def handle_get_balances(sid):
+    try:
+        conn = sqlite3.connect('pavyon.db')
+        cursor = conn.cursor()
+        # Bakiyesi en yüksek olanları en üstte getir
+        cursor.execute("SELECT username, balance FROM users ORDER BY balance DESC")
+        users = [{'username': row[0], 'balance': row[1]} for row in cursor.fetchall()]
+        conn.close()
+        await sio.emit('update_balances', users, to=sid)
+    except Exception as e:
+        print(f"Hata: Bakiye çekilemedi - {e}")
+        
 async def event_isleyici(event, data):
     global vip_count
     try:
@@ -77,7 +91,7 @@ async def event_isleyici(event, data):
                             if vip_count > 0:
                                 vip_count -= 1
                             
-                            asyncio.create_task(auto_release())
+                        asyncio.create_task(auto_release())
                     else:
                         print(f"❌ [RED] {user} parası yetmedi.")
                 else:
@@ -85,7 +99,6 @@ async def event_isleyici(event, data):
                     print(f"🚫 [DOLU] VIP masalar dolu, {user} bakiyesi korundu.")
                     await sio.emit('chat_message', {'msg': "VIP masalar dolu kanka, sonra dene!"})
 
-            # Sıfırlama komutuna sayacı da ekle
             elif content == "!pavyonu_sifirla" and user == "rizelimichaelscofield":
                 vip_count = 0
                 await sio.emit('reset_ui')
