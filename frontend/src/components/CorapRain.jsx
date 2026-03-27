@@ -36,7 +36,7 @@ export const CorapRain = () => {
           }}
         >
           <img 
-            src="../public/corap.png" 
+            src="../corap.png" 
             alt="rose"
             style={{ 
               width: `${rose.size}rem`, 
