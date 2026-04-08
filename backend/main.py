@@ -18,15 +18,24 @@ BAKIYE_ODUL_ADI = "PAVYON 500 BAKİYE"
 # --- ASYNC SOCKET.IO ---
 sio = socketio.AsyncServer(
     async_mode='aiohttp',
-    cors_allowed_origins='*',
+    cors_allowed_origins=['http://165.245.215.115'], # Sadece senin sitenden gelenleri kabul eder
     logger=False,
     engineio_logger=False
 )
 app = web.Application()
 sio.attach(app)
-loop = None
 
-vip_count = 0
+# === KAPI GÜVENLİĞİ (FEDAI) ===
+@sio.on('connect')
+async def connect(sid, environ, auth):
+    # Eğer bağlanan kişi şifre göndermediyse veya şifre yanlışsa
+    if not auth or auth.get('token') != "PAVYON_GIZLI_SIFRE_2026":
+        print(f"🛑 [GÜVENLİK] İnsafsız bir bot girmeye çalıştı, tekmeyi yedi! (SID: {sid})")
+        raise socketio.exceptions.ConnectionRefusedError('Şifre Yanlış! Mekana Giremezsin.')
+    
+    print(f"✅ [GİRİŞ BAŞARILI] Gerçek site bağlandı. (SID: {sid})")
+
+vip_users = set()
 
 @sio.on('get_all_balances')
 async def handle_get_balances(sid):
@@ -42,7 +51,7 @@ async def handle_get_balances(sid):
         print(f"Hata: Bakiye çekilemedi - {e}")
         
 async def event_isleyici(event, data):
-    global vip_count
+    global vip_users
     try:
         raw_inner = data.get('data')
         inner = json.loads(raw_inner) if isinstance(raw_inner, str) else raw_inner
@@ -79,19 +88,22 @@ async def event_isleyici(event, data):
                     print(f"⚠️ [RED] {user} bakiyesi yetersiz.")
 
             elif content == "!vip":
-                if vip_count < 4:
+                if user in vip_users:
+                    print(f"[UYARI] {user} zaten VIP masada.")
+                
+                elif len(vip_users) < 4:
                     if bakiye_harca(user, 600):
-                        vip_count += 1
-                        print(f"🛋️ [VIP] {user} masaya geçti. (Kapasite: {vip_count}/4)")
+                        vip_users.add(user)
+                        print(f"🛋️ [VIP] {user} masaya geçti. ")
                         await sio.emit('occupy_table', {'user': user})
                     
-                        async def auto_release():
+                        async def auto_release(kalkan_kisi):
                             await asyncio.sleep(180)
-                            global vip_count
-                            if vip_count > 0:
-                                vip_count -= 1
+                            global vip_users
+                            if kalkan_kisi in vip_users:
+                                vip_users.remove(kalkan_kisi)
                             
-                        asyncio.create_task(auto_release())
+                        asyncio.create_task(auto_release(user))
                     else:
                         print(f"❌ [RED] {user} parası yetmedi.")
                 else:
@@ -100,7 +112,7 @@ async def event_isleyici(event, data):
                     await sio.emit('chat_message', {'msg': "VIP masalar dolu kanka, sonra dene!"})
 
             elif content == "!pavyonu_sifirla" and user == "rizelimichaelscofield":
-                vip_count = 0
+                vip_users.clear()
                 await sio.emit('reset_ui')
 
             elif content == "!pavyon":
@@ -153,7 +165,7 @@ async def event_isleyici(event, data):
             elif content.startswith("!bakiye"):
                 parts = raw_content.split()
                 
-                if len(parts) == 3 and user == "rizelimichaelscofield":
+                if len(parts) == 3 and user in ["rizelimichaelscofield", "alieren21"]:
                     try:
                         miktar = int(parts[1])
                         hedef_kisi = parts[2]
@@ -202,4 +214,4 @@ if __name__ == "__main__":
     threading.Thread(target=client.start, args=(bridge,), daemon=True).start()
     
     print(f"🚀 Pavyon Backend V7 (Lokal) Aktif. Port: 5000")
-    web.run_app(app, port=5000, loop=loop)
+    web.run_app(app, host='0.0.0.0', port=5000, loop=loop)

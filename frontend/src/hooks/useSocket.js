@@ -2,7 +2,10 @@ import { useEffect } from 'react';
 import io from 'socket.io-client';
 import { usePavyonStore } from '../store/usePavyonStore';
 
-const socket = io('http://127.0.0.1:5000', {
+export const socket = io('http://165.245.215.115:5000', {
+  auth: {
+    token: "PAVYON_GIZLI_SIFRE_2026"
+  },
   transports: ['websocket', 'polling'], 
   forceNew: true,
   reconnectionAttempts: 5

@@ -21,6 +21,11 @@ export const usePavyonStore = create((set, get) => ({
     const { table1, table2 } = get().vipTables;
     const shortName = user.length > 10 ? user.substring(0, 10) + ".." : user;
     
+    if (table1.includes(shortName) || table2.includes(shortName)) {
+
+      return;
+
+    }
     let targetTable = null;
     
     // Masa kapasite kontrolü (Her masa 2 kişi)
