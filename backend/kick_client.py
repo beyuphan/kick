@@ -6,7 +6,7 @@ class KickClient:
         self.url = f"wss://ws-us2.pusher.com/app/{pusher_key}?protocol=7&client=js&version=8.4.0"
         self.chatroom_id = chatroom_id
         self.callback = None
-        self.ws = None # WebSocket nesnesini tutmak için eklendi
+        self.ws = None
 
     def on_message(self, ws, message):
         data = json.loads(message)
@@ -21,18 +21,12 @@ class KickClient:
 
     def start(self, callback):
         self.callback = callback
-        print("🔌 [SİSTEM] Kick bağlantısı başlatılıyor...")
-        
-        # ws nesnesini sınıfa kaydettik
-        self.ws = websocket.WebSocketApp(
-            self.url, 
-            on_message=self.on_message
-        )
+        print("🔌 [KICK] WebSocket bağlantısı kuruluyor...")
+        self.ws = websocket.WebSocketApp(self.url, on_message=self.on_message)
         self.ws.run_forever()
 
     def stop(self):
-        # Bağlantıyı manuel kesmek için eklendi
         if self.ws:
-            print("🛑 [SİSTEM] Kick bağlantısı kapatılıyor...")
+            print("🛑 [KICK] WebSocket bağlantısı PANEL tarafından kesildi.")
             self.ws.close()
             self.ws = None

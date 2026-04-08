@@ -264,9 +264,5 @@ if __name__ == "__main__":
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     
-    # Kick Client Başlat
-    K_ID = os.getenv("KICK_CHANNEL_ID")
-    K_KEY = os.getenv("PUSHER_KEY")
-    
     print(f"🚀 Pavyon Backend V7 (Lokal) Aktif. Port: 5000")
     web.run_app(app, host='0.0.0.0', port=5000, loop=loop)
