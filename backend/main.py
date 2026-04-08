@@ -35,6 +35,10 @@ async def connect(sid, environ, auth):
     
     print(f"✅ [GİRİŞ BAŞARILI] Gerçek site bağlandı. (SID: {sid})")
 
+service_active = False
+kick_client_instance = None
+auto_stop_task = None
+
 vip_users = set()
 
 @sio.on('get_all_balances')
@@ -49,7 +53,60 @@ async def handle_get_balances(sid):
         await sio.emit('update_balances', users, to=sid)
     except Exception as e:
         print(f"Hata: Bakiye çekilemedi - {e}")
+
+
+@sio.on('get_service_status')
+async def get_service_status(sid):
+    await sio.emit('service_status_update', {'status': service_active}, to=sid)
+
+@sio.on('start_kick_service')
+async def start_kick_service(sid):
+    global service_active, kick_client_instance, auto_stop_task
+    
+    if service_active:
+        return
         
+    service_active = True
+    print("🟢 [PANEL] Kick servisi BAŞLATILDI.")
+    
+    if not kick_client_instance:
+        K_ID = os.getenv("KICK_CHANNEL_ID")
+        K_KEY = os.getenv("PUSHER_KEY")
+        kick_client_instance = KickClient(K_ID, K_KEY)
+    
+    threading.Thread(target=kick_client_instance.start, args=(bridge,), daemon=True).start()
+    await sio.emit('service_status_update', {'status': True})
+    
+    # 1 Saat (3600 saniye) sonra otomatik kapatma zamanlayıcısı
+    async def auto_stop():
+        await asyncio.sleep(3600)
+        if service_active:
+            print("⏰ [OTOMATİK] 1 Saat doldu, servis yorulmaması için kapatılıyor.")
+            await stop_kick_logic()
+            
+    auto_stop_task = asyncio.create_task(auto_stop())
+
+@sio.on('stop_kick_service')
+async def stop_kick_service(sid):
+    print("🔴 [PANEL] Kick servisi DURDURULDU.")
+    await stop_kick_logic()
+
+async def stop_kick_logic():
+    global service_active, auto_stop_task, kick_client_instance
+    if not service_active:
+        return
+        
+    service_active = False
+    if kick_client_instance:
+        kick_client_instance.stop()
+        
+    if auto_stop_task:
+        auto_stop_task.cancel()
+        auto_stop_task = None
+        
+    await sio.emit('service_status_update', {'status': False})
+
+
 async def event_isleyici(event, data):
     global vip_users
     try:
@@ -210,8 +267,6 @@ if __name__ == "__main__":
     # Kick Client Başlat
     K_ID = os.getenv("KICK_CHANNEL_ID")
     K_KEY = os.getenv("PUSHER_KEY")
-    client = KickClient(K_ID, K_KEY)
-    threading.Thread(target=client.start, args=(bridge,), daemon=True).start()
     
     print(f"🚀 Pavyon Backend V7 (Lokal) Aktif. Port: 5000")
     web.run_app(app, host='0.0.0.0', port=5000, loop=loop)

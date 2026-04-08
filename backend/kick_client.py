@@ -6,17 +6,16 @@ class KickClient:
         self.url = f"wss://ws-us2.pusher.com/app/{pusher_key}?protocol=7&client=js&version=8.4.0"
         self.chatroom_id = chatroom_id
         self.callback = None
+        self.ws = None # WebSocket nesnesini tutmak için eklendi
 
     def on_message(self, ws, message):
         data = json.loads(message)
         event = data.get("event")
         
-        # Bağlantı ve Abone onaylarını sessizce hallet
         if event == "pusher:connection_established":
             ws.send(json.dumps({"event": "pusher:subscribe", "data": {"channel": f"chatrooms.{self.chatroom_id}.v2"}}))
             ws.send(json.dumps({"event": "pusher:subscribe", "data": {"channel": f"chatroom_{self.chatroom_id}"}}))
         
-        # Sadece işimize yarayan eventleri callback'e gönder
         if self.callback and event in ["App\\Events\\ChatMessageEvent", "RewardRedeemedEvent"]:
             self.callback(event, data)
 
@@ -24,10 +23,16 @@ class KickClient:
         self.callback = callback
         print("🔌 [SİSTEM] Kick bağlantısı başlatılıyor...")
         
-        # You MUST use WebSocketApp for run_forever() to work
-        ws = websocket.WebSocketApp(
+        # ws nesnesini sınıfa kaydettik
+        self.ws = websocket.WebSocketApp(
             self.url, 
             on_message=self.on_message
         )
-        
-        ws.run_forever()
+        self.ws.run_forever()
+
+    def stop(self):
+        # Bağlantıyı manuel kesmek için eklendi
+        if self.ws:
+            print("🛑 [SİSTEM] Kick bağlantısı kapatılıyor...")
+            self.ws.close()
+            self.ws = None

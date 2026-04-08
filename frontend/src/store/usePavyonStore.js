@@ -14,8 +14,10 @@ export const usePavyonStore = create((set, get) => ({
   currentAlert: null, // Şu an ekranda olan yazı
   eventHistory: [], 
   balances: [],
+  serviceStatus: false,
   // --- ACTIONS ---
-
+  setServiceStatus: (status) => set({ serviceStatus: status }),   
+  
   // VIP Masaya Oturma ve 3 Dakika Sınırı
   occupyTable: (user) => {
     const { table1, table2 } = get().vipTables;

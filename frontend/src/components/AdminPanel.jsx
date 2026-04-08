@@ -3,18 +3,30 @@ import { usePavyonStore } from '../store/usePavyonStore';
 import { socket } from '../hooks/useSocket';
 
 export const AdminPanel = () => {
-  const { vipTables, eventHistory, balances } = usePavyonStore();
+  const { vipTables, eventHistory, balances, serviceStatus, setServiceStatus } = usePavyonStore();
 
   useEffect(() => {
-    // Her 3 saniyede bir güncel bakiyeleri backend'den iste
+    // Sayfa açıldığında ilk verileri çek
+    socket.emit('get_all_balances');
+    socket.emit('get_service_status');
+
     const interval = setInterval(() => {
       socket.emit('get_all_balances');
     }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+
+    // Servis durumu değiştiğinde state'i güncelle
+    socket.on('service_status_update', (data) => {
+      setServiceStatus(data.status);
+    });
+
+    return () => {
+      clearInterval(interval);
+      socket.off('service_status_update');
+    };
+  }, [setServiceStatus]);
 
   const panelStyle = {
-    backgroundColor: '#0f172a', // Koyu, temiz arka plan
+    backgroundColor: '#0f172a',
     color: '#e2e8f0',
     minHeight: '100vh',
     padding: '2rem',
@@ -31,8 +43,42 @@ export const AdminPanel = () => {
 
   return (
     <div style={panelStyle}>
-      <h1 style={{ borderBottom: '1px solid #334155', paddingBottom: '1rem', marginBottom: '2rem' }}>🎛️ Pavyon V2 Yönetim Paneli</h1>
+      <h1 style={{ borderBottom: '1px solid #334155', paddingBottom: '1rem', marginBottom: '2rem' }}>🎛️ Pavyon Yönetim Paneli</h1>
       
+      {/* YENİ: SERVİS KONTROL KARTI */}
+      <div style={{ ...cardStyle, marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h2 style={{ color: '#f8fafc', marginTop: 0, marginBottom: '0.5rem' }}>🔌 Backend Servis Kontrolü</h2>
+          <p style={{ color: '#94a3b8', margin: 0 }}>Kick dinleme servisi. Başlatıldıktan 1 saat sonra sunucuyu yormamak için otomatik kapanır.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <span style={{ 
+            padding: '0.5rem 1rem', 
+            borderRadius: '8px', 
+            backgroundColor: serviceStatus ? '#166534' : '#7f1d1d',
+            color: serviceStatus ? '#4ade80' : '#f87171',
+            fontWeight: 'bold'
+          }}>
+            Durum: {serviceStatus ? '🟢 AKTİF' : '🔴 PASİF'}
+          </span>
+          {!serviceStatus ? (
+            <button 
+              onClick={() => socket.emit('start_kick_service')} 
+              style={{ padding: '0.75rem 1.5rem', backgroundColor: '#22c55e', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+            >
+              Başlat
+            </button>
+          ) : (
+            <button 
+              onClick={() => socket.emit('stop_kick_service')} 
+              style={{ padding: '0.75rem 1.5rem', backgroundColor: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+            >
+              Durdur
+            </button>
+          )}
+        </div>
+      </div>
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem' }}>
         
         {/* VIP MASALAR */}
