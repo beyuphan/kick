@@ -18,7 +18,7 @@ BAKIYE_ODUL_ADI = "PAVYON 500 BAKİYE"
 # --- ASYNC SOCKET.IO ---
 sio = socketio.AsyncServer(
     async_mode='aiohttp',
-    cors_allowed_origins=['http://165.245.215.115'], # Sadece senin sitenden gelenleri kabul eder
+    cors_allowed_origins=['http://165.245.215.115:5173', 'http://165.245.215.115'], # Sadece senin sitenden gelenleri kabul eder
     logger=False,
     engineio_logger=False
 )
